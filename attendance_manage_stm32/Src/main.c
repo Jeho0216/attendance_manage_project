@@ -68,6 +68,7 @@ UART_HandleTypeDef huart3;
 osThreadId defaultTaskHandle;
 osThreadId uart_rx_TaskHandle;
 osThreadId lcd_TaskHandle;
+osThreadId rfid_TaskHandle;
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
@@ -96,9 +97,33 @@ static void MX_I2C2_Init(void);
 void StartDefaultTask(void const * argument);
 void Start_uart_rx_Task(void const * argument);
 void Start_lcd_Task(void const * argument);
+void Start_rfid_Task(void const * argument);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
+
+//RFID functions.
+uint8_t MFRC522_Check(uint8_t* id);
+uint8_t MFRC522_Compare(uint8_t* CardID, uint8_t* CompareID);
+void MFRC522_WriteRegister(uint8_t addr, uint8_t val);
+uint8_t MFRC522_ReadRegister(uint8_t addr);
+void MFRC522_SetBitMask(uint8_t reg, uint8_t mask);
+void MFRC522_ClearBitMask(uint8_t reg, uint8_t mask);
+uint8_t MFRC522_Request(uint8_t reqMode, uint8_t* TagType);
+uint8_t MFRC522_ToCard(uint8_t command, uint8_t* sendData, uint8_t sendLen, uint8_t* backData, uint16_t* backLen);
+uint8_t MFRC522_Anticoll(uint8_t* serNum);
+void MFRC522_CalulateCRC(uint8_t* pIndata, uint8_t len, uint8_t* pOutData);
+uint8_t MFRC522_SelectTag(uint8_t* serNum);
+uint8_t MFRC522_Auth(uint8_t authMode, uint8_t BlockAddr, uint8_t* Sectorkey, uint8_t* serNum);
+uint8_t MFRC522_Read(uint8_t blockAddr, uint8_t* recvData);
+uint8_t MFRC522_Write(uint8_t blockAddr, uint8_t* writeData);
+void MFRC522_Init(void);
+void MFRC522_Reset(void);
+void MFRC522_AntennaOn(void);
+void MFRC522_AntennaOff(void);
+void MFRC522_Halt(void);
+
+//UART function.
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
 	static uint8_t rx_head = 0;
@@ -157,6 +182,8 @@ int main(void)
   I2C_LCD_init();
   I2C_LCD_write_string_XY(0, 0, "-- Tag your Card");
 
+  MFRC522_Init();
+
   HAL_UART_Receive_IT(&huart3, &rx_data, 1);
   /* USER CODE END 2 */
 
@@ -184,6 +211,10 @@ int main(void)
   /* definition and creation of lcd_Task */
   osThreadDef(lcd_Task, Start_lcd_Task, osPriorityIdle, 0, 128);
   lcd_TaskHandle = osThreadCreate(osThread(lcd_Task), NULL);
+
+  /* definition and creation of rfid_Task */
+  osThreadDef(rfid_Task, Start_rfid_Task, osPriorityIdle, 0, 128);
+  rfid_TaskHandle = osThreadCreate(osThread(rfid_Task), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -388,7 +419,6 @@ void StartDefaultTask(void const * argument)
 	/* Infinite loop */
 	for (;;)
 	{
-		if()
 		osDelay(1);
 	}
   /* USER CODE END 5 */ 
@@ -431,6 +461,7 @@ void Start_lcd_Task(void const * argument)
   /* Infinite loop */
   for(;;)
   {
+	  //printf("lcd_id_flag : %d\n", lcd_id_flag);
 	if(lcd_id_flag == 1){		//When RFID card is tagged,
 		I2C_LCD_write_string_XY(1, 0, card_id);
 		lcd_id_flag = 0;
@@ -438,6 +469,35 @@ void Start_lcd_Task(void const * argument)
     osDelay(1);
   }
   /* USER CODE END Start_lcd_Task */
+}
+
+/* USER CODE BEGIN Header_Start_rfid_Task */
+/**
+* @brief Function implementing the rfid_Task thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_Start_rfid_Task */
+void Start_rfid_Task(void const * argument)
+{
+  /* USER CODE BEGIN Start_rfid_Task */
+  /* Infinite loop */
+  for(;;)
+  {
+	  if(MFRC522_Check(card_id_buff) == MI_OK){
+		  sprintf(card_id, "%02x-%02x-%02x-%02x-%02x", card_id_buff[0], card_id_buff[1], card_id_buff[2], card_id_buff[3], card_id_buff[4]);
+
+		  if(strcmp(card_id, card_id_prev) != 0){
+			  printf("%s\n", card_id);		//send card id to Qt.
+			  lcd_id_flag = 1;		//print card id on LCD.
+			  printf("lcd flag : %d\n", lcd_id_flag);
+			  strcpy(card_id_prev, card_id);
+			  osDelay(10);
+		  }
+	  }
+    osDelay(1);
+  }
+  /* USER CODE END Start_rfid_Task */
 }
 
 /**
