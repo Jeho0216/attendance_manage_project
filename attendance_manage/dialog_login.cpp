@@ -22,8 +22,8 @@ void Dialog::on_pushButton_login_clicked()
 
     if(id == "admin" && pw == "admin"){
         QMessageBox::information(this, "Success", "로그인 성공\n");
-        hide();
         main_dashboard = new MainWindow();
         main_dashboard->show();
+        this->close();
     }
 }
