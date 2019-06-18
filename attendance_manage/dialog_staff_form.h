@@ -21,9 +21,11 @@ private slots:
 
     void on_pushButton_cancel_clicked();
 
+    void on_pushButton_card_clicked();
+
 private:
     Ui::Dialog_staff_form *ui;
-
+    QWidget *dashboard;
 };
 
 #endif // DIALOG_STAFF_FORM_H

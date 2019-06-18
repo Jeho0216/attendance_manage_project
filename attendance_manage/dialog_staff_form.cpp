@@ -8,6 +8,12 @@ Dialog_staff_form::Dialog_staff_form(QWidget *parent) :
     ui->setupUi(this);
     //사용자가 card_id는 입력불가.
     ui->lineEdit_card_id->setReadOnly(true);
+
+    //데시보드 변수 생성, 사용 불가 설정.
+    dashboard = parent;
+    dashboard->setEnabled(false);
+    //현재 창 사용가능하도록 설정.
+    this->setEnabled(true);
 }
 
 Dialog_staff_form::~Dialog_staff_form()
@@ -44,12 +50,19 @@ void Dialog_staff_form::on_pushButton_accept_clicked()
         QMessageBox::warning(this, "warning", "RFID카드를 등록하세요.");
         return;
     }
-
     //전부 입력되었을 경우,
     //데이터베이스에 추가하는 코드 필요.
+    dashboard->setEnabled(true);
+    this->close();
 }
 
 void Dialog_staff_form::on_pushButton_cancel_clicked()
 {
+    dashboard->setEnabled(true);
     this->close();
+}
+
+void Dialog_staff_form::on_pushButton_card_clicked()
+{
+    // RFID 입력을 기다리는코드 필요.
 }
