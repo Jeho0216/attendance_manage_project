@@ -1,6 +1,7 @@
 #include "mainwindow_dashboard.h"
 #include "ui_mainwindow_dashboard.h"
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -30,4 +31,11 @@ void MainWindow::show_time(){
 
     ui->label_date->setText(date_text);
     ui->label_time->setText(time_text);
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    staff_form = new Dialog_staff_form(this);
+    //화면 사용하지 못하게 만드는 코드를 추가하면 좋겠다.
+    staff_form->show();
 }

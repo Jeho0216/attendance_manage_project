@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QTime>          //2019.06.18 LJH
 #include <QTimer>       //2019.06.18 LJH
+#include "dialog_staff_form.h"      //2019.06.18 LJH
 
 namespace Ui {
 class MainWindow;
@@ -19,9 +20,11 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    Dialog_staff_form *staff_form;
 
 private slots:
     void show_time();
+    void on_pushButton_clicked();
 };
 
 #endif // MAINWINDOW_DASHBOARD_H

@@ -26,15 +26,18 @@ CONFIG += c++11
 
 SOURCES += \
         dialog_login.cpp \
+        dialog_staff_form.cpp \
         main.cpp \
         mainwindow_dashboard.cpp
 
 HEADERS += \
         dialog_login.h \
+        dialog_staff_form.h \
         mainwindow_dashboard.h
 
 FORMS += \
         dialog_login.ui \
+        dialog_staff_form.ui \
         mainwindow_dashboard.ui
 
 # Default rules for deployment.
