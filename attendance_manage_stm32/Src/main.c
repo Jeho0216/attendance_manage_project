@@ -52,6 +52,9 @@
 #include "cmsis_os.h"
 
 /* USER CODE BEGIN Includes */
+#include "I2C_LCD.h"
+#include "rc522.h"
+#include <stdio.h>
 #include <string.h>
 /* USER CODE END Includes */
 
@@ -64,14 +67,23 @@ UART_HandleTypeDef huart3;
 
 osThreadId defaultTaskHandle;
 osThreadId uart_rx_TaskHandle;
+osThreadId lcd_TaskHandle;
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 
-//UART용 변수
+//UART variables
 uint8_t rx_data = 0;
 char rx_str[20] = {0, };
 uint8_t rx_flag = 0;
+
+//LCD variables.
+uint8_t lcd_id_flag = 0;
+
+//RFID variables
+unsigned char card_id[14] = {0, };			//Card_id String(xx-xx-xx-xx-xx)
+unsigned char card_id_prev[14] = {0, };
+unsigned char card_id_buff[5] = {0, };		//card_id in RFID Function.
 
 /* USER CODE END PV */
 
@@ -83,6 +95,7 @@ static void MX_SPI1_Init(void);
 static void MX_I2C2_Init(void);
 void StartDefaultTask(void const * argument);
 void Start_uart_rx_Task(void const * argument);
+void Start_lcd_Task(void const * argument);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
@@ -141,6 +154,9 @@ int main(void)
   MX_SPI1_Init();
   MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
+  I2C_LCD_init();
+  I2C_LCD_write_string_XY(0, 0, "-- Tag your Card");
+
   HAL_UART_Receive_IT(&huart3, &rx_data, 1);
   /* USER CODE END 2 */
 
@@ -164,6 +180,10 @@ int main(void)
   /* definition and creation of uart_rx_Task */
   osThreadDef(uart_rx_Task, Start_uart_rx_Task, osPriorityIdle, 0, 128);
   uart_rx_TaskHandle = osThreadCreate(osThread(uart_rx_Task), NULL);
+
+  /* definition and creation of lcd_Task */
+  osThreadDef(lcd_Task, Start_lcd_Task, osPriorityIdle, 0, 128);
+  lcd_TaskHandle = osThreadCreate(osThread(lcd_Task), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -364,19 +384,14 @@ static void MX_GPIO_Init(void)
 void StartDefaultTask(void const * argument)
 {
 
-	/* USER CODE BEGIN 5 */
+  /* USER CODE BEGIN 5 */
 	/* Infinite loop */
 	for (;;)
 	{
-		//UART 수신 완료했을 경우,
-		if(rx_flag == 1){
-			printf("%s\n", rx_str);
-			strcpy(rx_str, "");
-			rx_flag = 0;
-		}
+		if()
 		osDelay(1);
 	}
-	/* USER CODE END 5 */
+  /* USER CODE END 5 */ 
 }
 
 /* USER CODE BEGIN Header_Start_uart_rx_Task */
@@ -389,12 +404,40 @@ void StartDefaultTask(void const * argument)
 void Start_uart_rx_Task(void const * argument)
 {
   /* USER CODE BEGIN Start_uart_rx_Task */
+	/* Infinite loop */
+	for (;;)
+	{
+		//end UART Receive.
+		if (rx_flag == 1){
+			printf("%s\n", rx_str);
+			strcpy(rx_str, "");
+			rx_flag = 0;
+		}
+		osDelay(1);
+	}
+  /* USER CODE END Start_uart_rx_Task */
+}
+
+/* USER CODE BEGIN Header_Start_lcd_Task */
+/**
+* @brief Function implementing the lcd_Task thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_Start_lcd_Task */
+void Start_lcd_Task(void const * argument)
+{
+  /* USER CODE BEGIN Start_lcd_Task */
   /* Infinite loop */
   for(;;)
   {
+	if(lcd_id_flag == 1){		//When RFID card is tagged,
+		I2C_LCD_write_string_XY(1, 0, card_id);
+		lcd_id_flag = 0;
+	}
     osDelay(1);
   }
-  /* USER CODE END Start_uart_rx_Task */
+  /* USER CODE END Start_lcd_Task */
 }
 
 /**
