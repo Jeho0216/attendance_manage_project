@@ -2,6 +2,8 @@
 #define MAINWINDOW_DASHBOARD_H
 
 #include <QMainWindow>
+#include <QTime>          //2019.06.18 LJH
+#include <QTimer>       //2019.06.18 LJH
 
 namespace Ui {
 class MainWindow;
@@ -17,6 +19,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+private slots:
+    void show_time();
 };
 
 #endif // MAINWINDOW_DASHBOARD_H
