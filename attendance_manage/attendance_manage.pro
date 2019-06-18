@@ -25,13 +25,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        dialog_login.cpp \
         main.cpp \
         mainwindow_dashboard.cpp
 
 HEADERS += \
+        dialog_login.h \
         mainwindow_dashboard.h
 
 FORMS += \
+        dialog_login.ui \
         mainwindow_dashboard.ui
 
 # Default rules for deployment.
