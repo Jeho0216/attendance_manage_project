@@ -52,7 +52,7 @@
 #include "cmsis_os.h"
 
 /* USER CODE BEGIN Includes */
-
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -68,6 +68,11 @@ osThreadId uart_rx_TaskHandle;
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 
+//UART용 변수
+uint8_t rx_data = 0;
+char rx_str[20] = {0, };
+uint8_t rx_flag = 0;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -81,7 +86,22 @@ void Start_uart_rx_Task(void const * argument);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	static uint8_t rx_head = 0;
 
+	if(huart->Instance == USART3){
+		if(rx_data == '\r' || rx_data == '\n'){
+			rx_head = 0;
+			rx_flag = 1;
+		}
+		else{
+			rx_str[rx_head] = rx_data;
+			rx_head++;
+		}
+	}
+	HAL_UART_Receive_IT(&huart3, &rx_data, 1);
+}
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
@@ -121,7 +141,7 @@ int main(void)
   MX_SPI1_Init();
   MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_UART_Receive_IT(&huart3, &rx_data, 1);
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -344,13 +364,19 @@ static void MX_GPIO_Init(void)
 void StartDefaultTask(void const * argument)
 {
 
-  /* USER CODE BEGIN 5 */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
-  /* USER CODE END 5 */ 
+	/* USER CODE BEGIN 5 */
+	/* Infinite loop */
+	for (;;)
+	{
+		//UART 수신 완료했을 경우,
+		if(rx_flag == 1){
+			printf("%s\n", rx_str);
+			strcpy(rx_str, "");
+			rx_flag = 0;
+		}
+		osDelay(1);
+	}
+	/* USER CODE END 5 */
 }
 
 /* USER CODE BEGIN Header_Start_uart_rx_Task */
