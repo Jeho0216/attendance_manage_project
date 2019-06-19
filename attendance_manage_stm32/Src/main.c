@@ -85,7 +85,6 @@ uint8_t lcd_id_flag = 0;
 //RFID variables
 uint8_t rfid_read_flag = 0;
 unsigned char card_id[14] = {0, };			//Card_id String(xx-xx-xx-xx-xx)
-unsigned char card_id_prev[14] = {0, };
 unsigned char card_id_buff[5] = {0, };		//card_id in RFID Function.
 
 /* USER CODE END PV */
@@ -441,7 +440,11 @@ void Start_uart_rx_Task(void const * argument)
 	{
 		//end UART Receive.
 		if (rx_flag == YES){
-			printf("%s\n", rx_str);
+			//receive "rfid" --> request rfid card id from QT program.
+			if(strcmp(rx_str, "rfid") == 0){
+				rfid_read_flag = YES;
+			}
+			//printf("%s\n", rx_str);
 			strcpy(rx_str, "");
 			rx_flag = NO;
 		}
@@ -486,13 +489,14 @@ void Start_rfid_Task(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-	  if(MFRC522_Check(card_id_buff) == MI_OK){
-		  sprintf(card_id, "%02x-%02x-%02x-%02x-%02x", card_id_buff[0], card_id_buff[1], card_id_buff[2], card_id_buff[3], card_id_buff[4]);
-		  printf("%s\n", card_id);		//send card id to Qt.
-		  lcd_id_flag = YES;		//print card id on LCD.
-		  printf("lcd flag : %d\n", lcd_id_flag);
-		  strcpy(card_id_prev, card_id);
-		  osDelay(1000);
+	  if(rfid_read_flag == YES){
+		  if(MFRC522_Check(card_id_buff) == MI_OK){
+			  sprintf(card_id, "%02X-%02X-%02X-%02X-%02X", card_id_buff[0], card_id_buff[1], card_id_buff[2], card_id_buff[3], card_id_buff[4]);
+			  printf("%s\n", card_id);		//send card id to Qt.
+			  lcd_id_flag = YES;		//print card id on LCD.
+			  rfid_read_flag = NO;
+			  osDelay(1000);
+		  }
 	  }
     osDelay(1);
   }
