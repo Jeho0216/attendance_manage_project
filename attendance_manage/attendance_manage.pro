@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT += serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -27,20 +28,17 @@ CONFIG += c++11
 SOURCES += \
         dialog_login.cpp \
         dialog_staff_form.cpp \
-        dialog_wait_rfid.cpp \
         main.cpp \
         mainwindow_dashboard.cpp
 
 HEADERS += \
         dialog_login.h \
         dialog_staff_form.h \
-        dialog_wait_rfid.h \
         mainwindow_dashboard.h
 
 FORMS += \
         dialog_login.ui \
         dialog_staff_form.ui \
-        dialog_wait_rfid.ui \
         mainwindow_dashboard.ui
 
 # Default rules for deployment.

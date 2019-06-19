@@ -3,7 +3,9 @@
 
 #include <QDialog>
 #include <QMessageBox>      //2019.06.18 LJH
-#include "dialog_wait_rfid.h"
+#include <QSerialPort>          //2019.06.19 LJH
+#include <QDebug>
+#include <QTimer>
 
 namespace Ui {
 class Dialog_staff_form;
@@ -18,17 +20,26 @@ public:
     ~Dialog_staff_form();
     void closeEvent(QCloseEvent *event);
 
+    //UART용 변수
+    QSerialPort *port;
+    QString read_string;
+
 private slots:
+    void text_Reading();
+
     void on_pushButton_accept_clicked();
 
     void on_pushButton_cancel_clicked();
 
     void on_pushButton_card_clicked();
 
+    void setup_uart();
+
+    void on_pushButton_rfid_con_clicked();
+
 private:
     Ui::Dialog_staff_form *ui;
     QWidget *dashboard;
-    Dialog_wait_rfid *wait_rfid;
 };
 
 #endif // DIALOG_STAFF_FORM_H
