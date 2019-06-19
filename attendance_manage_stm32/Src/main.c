@@ -486,14 +486,11 @@ void Start_rfid_Task(void const * argument)
   {
 	  if(MFRC522_Check(card_id_buff) == MI_OK){
 		  sprintf(card_id, "%02x-%02x-%02x-%02x-%02x", card_id_buff[0], card_id_buff[1], card_id_buff[2], card_id_buff[3], card_id_buff[4]);
-
-		  if(strcmp(card_id, card_id_prev) != 0){
-			  printf("%s\n", card_id);		//send card id to Qt.
-			  lcd_id_flag = 1;		//print card id on LCD.
-			  printf("lcd flag : %d\n", lcd_id_flag);
-			  strcpy(card_id_prev, card_id);
-			  osDelay(10);
-		  }
+		  printf("%s\n", card_id);		//send card id to Qt.
+		  lcd_id_flag = 1;		//print card id on LCD.
+		  printf("lcd flag : %d\n", lcd_id_flag);
+		  strcpy(card_id_prev, card_id);
+		  osDelay(1000);
 	  }
     osDelay(1);
   }
