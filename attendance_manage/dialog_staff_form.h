@@ -3,7 +3,9 @@
 
 #include <QDialog>
 #include <QMessageBox>      //2019.06.18 LJH
-#include "dialog_wait_rfid.h"
+#include <QSerialPort>          //2019.06.19 LJH
+#include <QDebug>
+#include <QTimer>
 
 namespace Ui {
 class Dialog_staff_form;
@@ -28,7 +30,7 @@ private slots:
 private:
     Ui::Dialog_staff_form *ui;
     QWidget *dashboard;
-    Dialog_wait_rfid *wait_rfid;
+    QSerialPort *port;
 };
 
 #endif // DIALOG_STAFF_FORM_H

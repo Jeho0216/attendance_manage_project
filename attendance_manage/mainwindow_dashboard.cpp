@@ -36,7 +36,5 @@ void MainWindow::show_time(){
 void MainWindow::on_pushButton_clicked()
 {
     staff_form = new Dialog_staff_form(this);
-    //화면 사용하지 못하게 만드는 코드를 추가하면 좋겠다.
     staff_form->show();
-    //this->setEnabled(false);
 }

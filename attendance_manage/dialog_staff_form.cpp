@@ -63,13 +63,6 @@ void Dialog_staff_form::on_pushButton_cancel_clicked()
     this->close();
 }
 
-void Dialog_staff_form::on_pushButton_card_clicked()
-{
-    //RFID 입력대기 코드 추가.
-    wait_rfid= new Dialog_wait_rfid(this);
-    wait_rfid->show();
-}
-
 void Dialog_staff_form::closeEvent(QCloseEvent *event){
     dashboard->setEnabled(true);
     this->close();
