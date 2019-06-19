@@ -6,6 +6,8 @@
 #include <QSerialPort>          //2019.06.19 LJH
 #include <QDebug>
 #include <QTimer>
+#include <QSqlDatabase>     //2019.06.19 LJH
+#include "db_manager.h"     //2019.06.19 LJH
 
 namespace Ui {
 class Dialog_staff_form;
@@ -23,6 +25,9 @@ public:
     //UART용 변수
     QSerialPort *port;
     QString read_string;
+
+    //DB용 변수
+    db_manager *database_1;
 
 private slots:
     void text_Reading();

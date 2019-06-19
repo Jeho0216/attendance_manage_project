@@ -6,6 +6,7 @@
 
 QT       += core gui
 QT += serialport
+QT += sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -26,12 +27,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        db_manager.cpp \
         dialog_login.cpp \
         dialog_staff_form.cpp \
         main.cpp \
         mainwindow_dashboard.cpp
 
 HEADERS += \
+        db_manager.h \
         dialog_login.h \
         dialog_staff_form.h \
         mainwindow_dashboard.h
