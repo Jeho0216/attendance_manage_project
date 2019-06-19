@@ -72,6 +72,7 @@ osThreadId rfid_TaskHandle;
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
+enum {NO, YES}flag_val;
 
 //UART variables
 uint8_t rx_data = 0;
@@ -82,6 +83,7 @@ uint8_t rx_flag = 0;
 uint8_t lcd_id_flag = 0;
 
 //RFID variables
+uint8_t rfid_read_flag = 0;
 unsigned char card_id[14] = {0, };			//Card_id String(xx-xx-xx-xx-xx)
 unsigned char card_id_prev[14] = {0, };
 unsigned char card_id_buff[5] = {0, };		//card_id in RFID Function.
@@ -131,7 +133,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	if(huart->Instance == USART3){
 		if(rx_data == '\r' || rx_data == '\n'){
 			rx_head = 0;
-			rx_flag = 1;
+			rx_flag = YES;
 		}
 		else{
 			rx_str[rx_head] = rx_data;
@@ -438,10 +440,10 @@ void Start_uart_rx_Task(void const * argument)
 	for (;;)
 	{
 		//end UART Receive.
-		if (rx_flag == 1){
+		if (rx_flag == YES){
 			printf("%s\n", rx_str);
 			strcpy(rx_str, "");
-			rx_flag = 0;
+			rx_flag = NO;
 		}
 		osDelay(1);
 	}
@@ -462,9 +464,9 @@ void Start_lcd_Task(void const * argument)
   for(;;)
   {
 	  //printf("lcd_id_flag : %d\n", lcd_id_flag);
-	if(lcd_id_flag == 1){		//When RFID card is tagged,
+	if(lcd_id_flag == YES){		//When RFID card is tagged,
 		I2C_LCD_write_string_XY(1, 0, card_id);
-		lcd_id_flag = 0;
+		lcd_id_flag = NO;
 	}
     osDelay(1);
   }
@@ -487,7 +489,7 @@ void Start_rfid_Task(void const * argument)
 	  if(MFRC522_Check(card_id_buff) == MI_OK){
 		  sprintf(card_id, "%02x-%02x-%02x-%02x-%02x", card_id_buff[0], card_id_buff[1], card_id_buff[2], card_id_buff[3], card_id_buff[4]);
 		  printf("%s\n", card_id);		//send card id to Qt.
-		  lcd_id_flag = 1;		//print card id on LCD.
+		  lcd_id_flag = YES;		//print card id on LCD.
 		  printf("lcd flag : %d\n", lcd_id_flag);
 		  strcpy(card_id_prev, card_id);
 		  osDelay(1000);
