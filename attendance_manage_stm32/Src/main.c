@@ -444,7 +444,11 @@ void Start_uart_rx_Task(void const * argument)
 			if(strcmp(rx_str, "rfid") == 0){
 				rfid_read_flag = YES;
 			}
-			//printf("%s\n", rx_str);
+			//cancel rfid tag.
+			if(strcmp(rx_str, "rfid_cancle") == 0){
+				rfid_read_flag = NO;
+			}
+			printf("%s\n", rx_str);
 			strcpy(rx_str, "");
 			rx_flag = NO;
 		}
