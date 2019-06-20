@@ -97,16 +97,8 @@ void Dialog_staff_form::on_pushButton_accept_clicked()
     }
 }
 
-void Dialog_staff_form::on_pushButton_cancel_clicked()
-{
-    dashboard->setEnabled(true);
-    port->close();
-    this->close();
-}
-
 void Dialog_staff_form::closeEvent(QCloseEvent *event){
     dashboard->setEnabled(true);
-    port->write("rfid_cancel\n");
     port->close();
     this->close();
 }
@@ -133,4 +125,14 @@ void Dialog_staff_form::setup_uart(){
 void Dialog_staff_form::on_pushButton_rfid_con_clicked()
 {
     setup_uart();
+}
+
+void Dialog_staff_form::on_pushButton_cancel_clicked()
+{
+    QByteArray send = "rfid_cancel";
+    send.append('\n');
+    port->write(send.data());
+    dashboard->setEnabled(true);
+    QMessageBox::information(this, "aaa", "aaa");
+    this->close();
 }
