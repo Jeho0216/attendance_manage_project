@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QTime>          //2019.06.18 LJH
 #include <QTimer>       //2019.06.18 LJH
+#include <QSqlDatabase>     //2019.06.20 LJH
+#include "db_manager.h"     //2019.06.20 LJH
 #include "dialog_staff_form.h"      //2019.06.18 LJH
 
 namespace Ui {
@@ -21,6 +23,7 @@ public:
 private:
     Ui::MainWindow *ui;
     Dialog_staff_form *staff_form;
+    db_manager *database_1;
 
 private slots:
     void show_time();

@@ -106,6 +106,7 @@ void Dialog_staff_form::on_pushButton_cancel_clicked()
 
 void Dialog_staff_form::closeEvent(QCloseEvent *event){
     dashboard->setEnabled(true);
+    port->write("rfid_cancel\n");
     port->close();
     this->close();
 }

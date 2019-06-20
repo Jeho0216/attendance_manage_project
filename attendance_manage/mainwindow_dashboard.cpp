@@ -15,6 +15,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     show_time();
     //--------------------------------------
+    //데이터베이스 연결 코드 2019.06.20
+    database_1 = new db_manager("attendance_mng");
 }
 
 MainWindow::~MainWindow()
