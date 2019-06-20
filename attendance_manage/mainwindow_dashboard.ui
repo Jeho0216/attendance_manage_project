@@ -47,7 +47,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -84,8 +84,8 @@
      <widget class="QPushButton" name="pushButton">
       <property name="geometry">
        <rect>
-        <x>50</x>
-        <y>30</y>
+        <x>300</x>
+        <y>10</y>
         <width>89</width>
         <height>25</height>
        </rect>
@@ -93,6 +93,26 @@
       <property name="text">
        <string>사원추가</string>
       </property>
+     </widget>
+     <widget class="QTableWidget" name="tableWidget">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>281</width>
+        <height>581</height>
+       </rect>
+      </property>
+      <column>
+       <property name="text">
+        <string>이름</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>전화번호</string>
+       </property>
+      </column>
      </widget>
     </widget>
    </widget>

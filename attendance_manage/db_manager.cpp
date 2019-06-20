@@ -40,3 +40,27 @@ bool db_manager::add_staff(QString input_name, int input_age, QString input_phon
     }
     return result;
 }
+
+//대시보드에 사원 정보 출력
+void db_manager::print_staff(QTableWidget *table){
+    uint8_t row_count = 0;
+    QSqlQuery query;
+
+    query.exec("select name, phone from staff_list");
+    while(query.next()){
+        QTableWidgetItem *table_name = new QTableWidgetItem();
+        QTableWidgetItem *table_phone = new QTableWidgetItem();
+
+        row_count++;
+        table->setRowCount(row_count);
+
+        QString name = query.value("name").toString();
+        QString phone = query.value("phone").toString();
+        table_name->setText(name);
+        table_phone->setText(phone);
+        qDebug() << "name : " << name << "  phone : " << phone << endl;
+
+        table->setItem(row_count-1, 0, table_name);
+        table->setItem(row_count-1, 1, table_phone);
+    }
+}

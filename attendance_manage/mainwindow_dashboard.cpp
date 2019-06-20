@@ -37,6 +37,13 @@ void MainWindow::show_time(){
 
 void MainWindow::on_pushButton_clicked()
 {
-    staff_form = new Dialog_staff_form(this);
+    staff_form = new Dialog_staff_form(this, database_1);
     staff_form->show();
+}
+
+void MainWindow::on_tabWidget_tabBarClicked(int index)
+{
+    if(index == 1){
+        database_1->print_staff(ui->tableWidget);
+    }
 }

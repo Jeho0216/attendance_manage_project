@@ -1,7 +1,7 @@
 #include "dialog_staff_form.h"
 #include "ui_dialog_staff_form.h"
 
-Dialog_staff_form::Dialog_staff_form(QWidget *parent) :
+Dialog_staff_form::Dialog_staff_form(QWidget *parent, db_manager *dashboard_db) :
     QDialog(parent),
     ui(new Ui::Dialog_staff_form)
 {
@@ -11,7 +11,7 @@ Dialog_staff_form::Dialog_staff_form(QWidget *parent) :
     ui->lineEdit_card_id->setReadOnly(true);
 
     //DB 연결
-    database_1 = new db_manager("attendance_mng");        //DB 생성자로 연결가능.
+    database_2 = dashboard_db;        //DB 생성자로 연결가능.
 
     //RFID 태그 연결
     port = new QSerialPort();
@@ -81,12 +81,10 @@ void Dialog_staff_form::on_pushButton_accept_clicked()
     }
     //전부 입력되었을 경우,
     //데이터베이스에 추가하는 코드 필요.
-    result = database_1->add_staff(input_name, input_age, input_phone, input_card_id);
+    result = database_2->add_staff(input_name, input_age, input_phone, input_card_id);
 
     if(result == true){
         dashboard->setEnabled(true);
-
-        delete database_1;
         port->close();
         this->close();
     }
