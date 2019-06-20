@@ -11,7 +11,7 @@ Dialog_staff_form::Dialog_staff_form(QWidget *parent) :
     ui->lineEdit_card_id->setReadOnly(true);
 
     //DB 연결
-    database_1 = new db_manager("test");        //DB 생성자로 연결가능.
+    database_1 = new db_manager("attendance_mng");        //DB 생성자로 연결가능.
 
     //RFID 태그 연결
     port = new QSerialPort();
@@ -56,6 +56,7 @@ void Dialog_staff_form::on_pushButton_accept_clicked()
     int input_age = 0;
     QString input_phone;
     QString input_card_id;
+    bool result = false;
 
     input_name = ui->lineEdit_name->text();
     input_age = ui->lineEdit_age->text().toInt();
@@ -80,13 +81,20 @@ void Dialog_staff_form::on_pushButton_accept_clicked()
     }
     //전부 입력되었을 경우,
     //데이터베이스에 추가하는 코드 필요.
-    database_1->add_staff(input_name, input_age, input_phone, input_card_id);
+    result = database_1->add_staff(input_name, input_age, input_phone, input_card_id);
 
-    dashboard->setEnabled(true);
+    if(result == true){
+        dashboard->setEnabled(true);
 
-    delete database_1;
-    port->close();
-    this->close();
+        delete database_1;
+        port->close();
+        this->close();
+    }
+    else{
+        QMessageBox::warning(this, "Inser Error", "중복된 RFID카드 입니다.");
+        port->write("rfid\n");
+        return ;
+    }
 }
 
 void Dialog_staff_form::on_pushButton_cancel_clicked()

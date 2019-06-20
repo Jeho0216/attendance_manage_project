@@ -5,6 +5,7 @@
 #include <QSqlDatabase>     //2019.06.19 LJH
 #include <QSqlQuery>           //2019.06.19 LJH
 #include <QSqlError>           //2019.06.19 LJH
+#include <QMessageBox>  //2019.06.20 LJH
 
 class db_manager
 {

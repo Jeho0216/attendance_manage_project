@@ -17,6 +17,7 @@ db_manager::~db_manager(){
     my_db.close();
 }
 
+//사원 정보 staff_list에 등록.
 bool db_manager::add_staff(QString input_name, int input_age, QString input_phone, QString input_card){
     bool result = false;
 
@@ -37,4 +38,5 @@ bool db_manager::add_staff(QString input_name, int input_age, QString input_phon
         qDebug() << query.lastError().text();
         result = false;
     }
+    return result;
 }
