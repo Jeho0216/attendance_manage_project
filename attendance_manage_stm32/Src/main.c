@@ -131,6 +131,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
 	if(huart->Instance == USART3){
 		if(rx_data == '\r' || rx_data == '\n'){
+			rx_str[rx_head] = '\0';
 			rx_head = 0;
 			rx_flag = YES;
 		}
@@ -140,6 +141,12 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		}
 	}
 	HAL_UART_Receive_IT(&huart3, &rx_data, 1);
+}
+
+void rx_str_reset(void){
+	for(int i = 0; i < 20; i++){
+		rx_str[i] = '\0';
+	}
 }
 /* USER CODE END PFP */
 
@@ -445,11 +452,11 @@ void Start_uart_rx_Task(void const * argument)
 				rfid_read_flag = YES;
 			}
 			//cancel rfid tag.
-			if(strcmp(rx_str, "rfid_cancle") == 0){
+			if(strcmp(rx_str, "rfid_cancel") == 0){
 				rfid_read_flag = NO;
 			}
 			printf("%s\n", rx_str);
-			strcpy(rx_str, "");
+			rx_str_reset();
 			rx_flag = NO;
 		}
 		osDelay(1);
