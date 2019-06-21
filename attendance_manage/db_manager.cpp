@@ -50,7 +50,6 @@ void db_manager::print_staff(QTableWidget *table){
     while(query.next()){
         QTableWidgetItem *table_name = new QTableWidgetItem();
         QTableWidgetItem *table_phone = new QTableWidgetItem();
-
         row_count++;
         table->setRowCount(row_count);
 

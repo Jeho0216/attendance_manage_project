@@ -48,3 +48,13 @@ void MainWindow::on_pushButton_add_clicked()
     staff_form = new Dialog_staff_form(this, database_1, ui->tableWidget);
     staff_form->show();
 }
+
+
+void MainWindow::on_tableWidget_cellClicked(int row, int column)
+{
+    QString name;
+    if(column == 0){
+        name = ui->tableWidget->currentItem()->text();
+        qDebug() << "select name : " << name << endl;
+    }
+}
