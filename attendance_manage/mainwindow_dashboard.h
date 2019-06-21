@@ -29,6 +29,7 @@ private slots:
     void show_time();
     void on_pushButton_clicked();
     void on_tabWidget_tabBarClicked(int index);
+    void on_pushButton_add_clicked();
 };
 
 #endif // MAINWINDOW_DASHBOARD_H

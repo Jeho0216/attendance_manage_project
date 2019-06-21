@@ -1,7 +1,7 @@
 #include "dialog_staff_form.h"
 #include "ui_dialog_staff_form.h"
 
-Dialog_staff_form::Dialog_staff_form(QWidget *parent, db_manager *dashboard_db) :
+Dialog_staff_form::Dialog_staff_form(QWidget *parent, db_manager *dashboard_db, QTableWidget *table) :
     QDialog(parent),
     ui(new Ui::Dialog_staff_form)
 {
@@ -12,6 +12,9 @@ Dialog_staff_form::Dialog_staff_form(QWidget *parent, db_manager *dashboard_db) 
 
     //DB 연결
     database_2 = dashboard_db;        //DB 생성자로 연결가능.
+
+    //테이블 연결
+    table_dashboard = table;
 
     //RFID 태그 연결
     port = new QSerialPort();
@@ -85,6 +88,8 @@ void Dialog_staff_form::on_pushButton_accept_clicked()
 
     if(result == true){
         dashboard->setEnabled(true);
+        database_2->print_staff(table_dashboard);
+        QMessageBox::information(this, "success", "등록성공");
         port->close();
         this->close();
     }
@@ -131,6 +136,6 @@ void Dialog_staff_form::on_pushButton_cancel_clicked()
     send.append('\n');
     port->write(send.data());
     dashboard->setEnabled(true);
-    QMessageBox::information(this, "aaa", "aaa");
+    QMessageBox::information(this, "infomation", "취소되었습니다.");
     this->close();
 }

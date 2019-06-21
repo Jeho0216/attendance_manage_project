@@ -18,7 +18,7 @@ class Dialog_staff_form : public QDialog
     Q_OBJECT
 
 public:
-    explicit Dialog_staff_form(QWidget *parent, db_manager *dashboard_db);
+    explicit Dialog_staff_form(QWidget *parent, db_manager *dashboard_db, QTableWidget *table);
     ~Dialog_staff_form();
     void closeEvent(QCloseEvent *event);
 
@@ -28,6 +28,9 @@ public:
 
     //DB용 변수
     db_manager *database_2;
+
+    //대시보드 업데이트용 변수
+    QTableWidget *table_dashboard;
 
 private slots:
     void text_Reading();

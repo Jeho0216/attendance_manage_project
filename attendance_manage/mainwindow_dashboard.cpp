@@ -35,17 +35,16 @@ void MainWindow::show_time(){
     ui->label_time->setText(time_text);
 }
 
-void MainWindow::on_pushButton_clicked()
-{
-    staff_form = new Dialog_staff_form(this, database_1);
-    staff_form->show();
-}
-
 void MainWindow::on_tabWidget_tabBarClicked(int index)
 {
     if(index == 1){
-        ui->tableWidget->horizontalHeader()->setStretchLastSection(true);       //각 column 너비 자동조정.
         ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);        //테이블 수정(edit)불가 설정.
         database_1->print_staff(ui->tableWidget);
     }
+}
+
+void MainWindow::on_pushButton_add_clicked()
+{
+    staff_form = new Dialog_staff_form(this, database_1, ui->tableWidget);
+    staff_form->show();
 }
