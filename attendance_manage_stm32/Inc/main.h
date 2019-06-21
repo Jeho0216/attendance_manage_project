@@ -59,6 +59,11 @@
 
 /* Private define ------------------------------------------------------------*/
 
+#define Buzzer_Pin GPIO_PIN_3
+#define Buzzer_GPIO_Port GPIOA
+#define RFID_SDA_Pin GPIO_PIN_4
+#define RFID_SDA_GPIO_Port GPIOA
+
 /* ########################## Assert Selection ############################## */
 /**
   * @brief Uncomment the line below to expanse the "assert_param" macro in the 
