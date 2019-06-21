@@ -44,6 +44,8 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::on_tabWidget_tabBarClicked(int index)
 {
     if(index == 1){
+        ui->tableWidget->horizontalHeader()->setStretchLastSection(true);       //각 column 너비 자동조정.
+        ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);        //테이블 수정(edit)불가 설정.
         database_1->print_staff(ui->tableWidget);
     }
 }
