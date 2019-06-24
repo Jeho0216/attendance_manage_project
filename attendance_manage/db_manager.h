@@ -14,6 +14,7 @@ public:
     db_manager(const QString& path);
     ~db_manager();
     bool add_staff(QString input_name, int input_age, QString input_phone, QString input_card);
+    bool del_staff(QString del_card_id);
     void print_staff(QTableWidget *table);
     QString get_card_id(QString name, QString phone);       //이름과 전화번호로 card_id 검색
     QString *get_staff_info(QString search_card_id);

@@ -41,6 +41,20 @@ bool db_manager::add_staff(QString input_name, int input_age, QString input_phon
     return result;
 }
 
+//선택된 사원정보 삭제
+bool db_manager::del_staff(QString del_card_id){
+    QSqlQuery query;
+
+    if(query.exec("delete from staff_list where card_id='" + del_card_id + "'")){
+        qDebug() << query.lastQuery().toUtf8() << endl;
+        return true;
+    }
+    else {
+        qDebug() << query.lastError().text() << endl;
+        return false;
+    }
+}
+
 //대시보드에 사원 정보 출력
 void db_manager::print_staff(QTableWidget *table){
     uint8_t row_count = 0;

@@ -68,3 +68,20 @@ void MainWindow::on_tableWidget_cellClicked(int row, int column)
         ui->lineEdit_card->setText(staff_info[3]);
     }
 }
+
+void MainWindow::on_pushButton_del_clicked()
+{
+    QString card_id = ui->lineEdit_card->text();
+    qDebug() << "delete staff : " << card_id << endl;
+    if(database_1->del_staff(card_id)){     //성공
+        QMessageBox::information(this, "information", "사원정보 삭제 성공");
+        ui->lineEdit_name->setText("");
+        ui->lineEdit_age->setText("");
+        ui->lineEdit_card->setText("");
+        ui->lineEdit_phone->setText("");
+        database_1->print_staff(ui->tableWidget);
+    }
+    else{       //실패
+        QMessageBox::warning(this, "warning", "정보 삭제에 실패했습니다.");
+    }
+}

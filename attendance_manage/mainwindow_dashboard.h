@@ -31,6 +31,7 @@ private slots:
     void on_tabWidget_tabBarClicked(int index);
     void on_pushButton_add_clicked();
     void on_tableWidget_cellClicked(int row, int column);
+    void on_pushButton_del_clicked();
 };
 
 #endif // MAINWINDOW_DASHBOARD_H
