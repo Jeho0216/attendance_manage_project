@@ -40,14 +40,14 @@
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>40</x>
       <y>60</y>
       <width>1121</width>
       <height>641</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -81,26 +81,13 @@
      <attribute name="title">
       <string>사원관리</string>
      </attribute>
-     <widget class="QPushButton" name="pushButton_add">
-      <property name="geometry">
-       <rect>
-        <x>1020</x>
-        <y>580</y>
-        <width>89</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>사원추가</string>
-      </property>
-     </widget>
      <widget class="QGroupBox" name="groupBox">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>10</y>
         <width>281</width>
-        <height>591</height>
+        <height>581</height>
        </rect>
       </property>
       <property name="title">
@@ -112,7 +99,7 @@
          <x>10</x>
          <y>30</y>
          <width>261</width>
-         <height>551</height>
+         <height>511</height>
         </rect>
        </property>
        <attribute name="horizontalHeaderStretchLastSection">
@@ -129,6 +116,19 @@
         </property>
        </column>
       </widget>
+      <widget class="QPushButton" name="pushButton_add">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>550</y>
+         <width>89</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>사원추가</string>
+       </property>
+      </widget>
      </widget>
      <widget class="QGroupBox" name="groupBox_2">
       <property name="geometry">
@@ -136,7 +136,7 @@
         <x>300</x>
         <y>10</y>
         <width>801</width>
-        <height>561</height>
+        <height>581</height>
        </rect>
       </property>
       <property name="title">
@@ -145,9 +145,9 @@
       <widget class="QTableWidget" name="tableWidget_info">
        <property name="geometry">
         <rect>
-         <x>405</x>
+         <x>375</x>
          <y>60</y>
-         <width>381</width>
+         <width>411</width>
          <height>491</height>
         </rect>
        </property>
@@ -193,6 +193,130 @@
          <string>2019.06.21 18:00</string>
         </property>
        </item>
+      </widget>
+      <widget class="QLineEdit" name="lineEdit_name">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>109</y>
+         <width>161</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEdit_age">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>149</y>
+         <width>161</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEdit_phone">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>189</y>
+         <width>161</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEdit_card">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>229</y>
+         <width>161</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_2">
+       <property name="geometry">
+        <rect>
+         <x>130</x>
+         <y>110</y>
+         <width>41</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>이름</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_3">
+       <property name="geometry">
+        <rect>
+         <x>130</x>
+         <y>149</y>
+         <width>41</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>나이</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_4">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>189</y>
+         <width>71</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>전화번호</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_5">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>229</y>
+         <width>71</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>RFID KEY</string>
+       </property>
       </widget>
      </widget>
     </widget>

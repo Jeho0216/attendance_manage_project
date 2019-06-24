@@ -49,12 +49,22 @@ void MainWindow::on_pushButton_add_clicked()
     staff_form->show();
 }
 
-
+//사원 목록에서 사원 이름을 클릭할 경우,
 void MainWindow::on_tableWidget_cellClicked(int row, int column)
 {
-    QString name;
+    QString name, phone, card_id;
+    QString *staff_info;
+
     if(column == 0){
         name = ui->tableWidget->currentItem()->text();
+        phone = ui->tableWidget->item(row, 1)->text();
         qDebug() << "select name : " << name << endl;
+        card_id = database_1->get_card_id(name, phone);      //입력한 이름에 대한 card_id 값 반환.
+
+        staff_info = database_1->get_staff_info(card_id);       //입력받은 card_id를 가진 사원 정보 반환.
+        ui->lineEdit_name->setText(staff_info[0]);
+        ui->lineEdit_age->setText(staff_info[1]);
+        ui->lineEdit_phone->setText(staff_info[2]);
+        ui->lineEdit_card->setText(staff_info[3]);
     }
 }
