@@ -72,6 +72,10 @@
 	</natures>
 	<linkedResources>
     <link>
+      <name>Application/TrueSTUDIO/syscalls.c</name>
+      <type>1</type>
+      <location>PARENT-1-PROJECT_LOC/syscalls.c</location>
+    </link><link>
       <name>Application/TrueSTUDIO/startup_stm32f429xx.s</name>
       <type>1</type>
       <location>PARENT-1-PROJECT_LOC/startup_stm32f429xx.s</location>
@@ -83,9 +87,9 @@
     </link>
 		
 	<link>
-			<name>Application</name>
+			
 			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
+			
 		</link>
     <link>
 			<name>Application/User</name>
@@ -112,15 +116,11 @@
 			<type>1</type>
 			<location>PARENT-2-PROJECT_LOC/Src/stm32f4xx_hal_msp.c</location>
 		</link>
+    
     <link>
-			<name>Application/User/stm32f4xx_hal_timebase_TIM.c</name>
-			<type>1</type>
-			<location>PARENT-2-PROJECT_LOC/Src/stm32f4xx_hal_timebase_TIM.c</location>
-		</link>
-    <link>
-			<name>Drivers</name>
+			
 			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
+			
 		</link>
     <link>
 			<name>Drivers/STM32F4xx_HAL_Driver</name>
@@ -228,9 +228,9 @@
 			<location>PARENT-2-PROJECT_LOC//Src/system_stm32f4xx.c</location>
 		</link>
     <link>
-			<name>Middlewares</name>
+			
 			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
+			
 		</link>
     <link>
 			<name>Middlewares/FreeRTOS</name>
@@ -282,5 +282,29 @@
 			<type>1</type>
 			<location>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.c</location>
 		</link>
-  </linkedResources>
+  <link>
+      <name>Application</name>
+      <type>2</type>
+      <locationURI>virtual:/virtual</locationURI>
+    </link><link>
+      <name>Application/User/stm32f4xx_hal_timebase_tim.c</name>
+      <type>1</type>
+      <location>PARENT-2-PROJECT_LOC/Src/stm32f4xx_hal_timebase_tim.c</location>
+    </link><link>
+      <name>Drivers</name>
+      <type>2</type>
+      <locationURI>virtual:/virtual</locationURI>
+    </link><link>
+      <name>Drivers/STM32F4xx_HAL_Driver/stm32f4xx_hal_exti.c</name>
+      <type>1</type>
+      <location>PARENT-2-PROJECT_LOC/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c</location>
+    </link><link>
+      <name>Middlewares</name>
+      <type>2</type>
+      <locationURI>virtual:/virtual</locationURI>
+    </link><link>
+      <name>Middlewares/FreeRTOS/stream_buffer.c</name>
+      <type>1</type>
+      <location>PARENT-2-PROJECT_LOC/Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c</location>
+    </link></linkedResources>
 </projectDescription>
