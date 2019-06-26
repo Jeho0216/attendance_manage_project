@@ -36,6 +36,10 @@ void MainWindow::show_time(){
     QString date_text = date.toString("yyyy 년 MM 월 dd 일  dddd");
     QString time_text = time.toString("hh : mm : ss");
 
+    //------------------------테스트코드 : 삭제
+    QString string = date.toString("yyMMdd") + time.toString("hhmm");
+    //------------------------테스트코드 끝
+
     ui->label_date->setText(date_text);
     ui->label_time->setText(time_text);
 }
@@ -112,6 +116,7 @@ void MainWindow::text_Reading(){
         staff_info = database_1->get_staff_info(read_string);
         ui->lineEdit_state_name->setText(staff_info[0]);
         ui->lineEdit_state_card->setText(staff_info[3]);
+
         read_string = "";
     }
 }

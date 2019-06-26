@@ -41,6 +41,23 @@ bool db_manager::add_staff(QString input_name, int input_age, QString input_phon
     return result;
 }
 
+//태그된 card_id로 출근/퇴근 기록을 데이터베이스에 저장
+bool db_manager::add_clock_in_out(QString input_card_id, bool isClock_in){
+    QSqlQuery query;
+    QDate date = QDate::currentDate();
+    QTime time = QTime::currentTime();
+
+    QString time_text = date.toString("yyMMdd") + time.toString("hhmm");
+
+    if(isClock_in == true){     //출근시간 기록
+        //insert into attendance_state(card_id, clock_in) values('11-11-11-11-11', '시간');
+        //query = "insert into attendance_state(card_id, clock_in) values(";
+    }
+    else if(isClock_in == false){       //퇴근시간 기록
+        //update ~~~~~
+    }
+}
+
 //선택된 사원정보 삭제
 bool db_manager::del_staff(QString del_card_id){
     QSqlQuery query;
