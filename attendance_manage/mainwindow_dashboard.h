@@ -5,6 +5,7 @@
 #include <QTime>          //2019.06.18 LJH
 #include <QTimer>       //2019.06.18 LJH
 #include <QSqlDatabase>     //2019.06.20 LJH
+#include <QSerialPort>          //2019.06.26 LJH
 #include "db_manager.h"     //2019.06.20 LJH
 #include "dialog_staff_form.h"      //2019.06.18 LJH
 
@@ -22,15 +23,20 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    QSerialPort *port;
     Dialog_staff_form *staff_form;
     db_manager *database_1;
+    QString read_string;
 
 private slots:
+    void text_Reading();
+    void setup_uart();
     void show_time();
     void on_pushButton_clicked();
     void on_tabWidget_tabBarClicked(int index);
     void on_pushButton_add_clicked();
     void on_tableWidget_cellClicked(int row, int column);
+    void on_pushButton_del_clicked();
 };
 
 #endif // MAINWINDOW_DASHBOARD_H

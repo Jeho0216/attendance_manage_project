@@ -21,7 +21,6 @@ Dialog_staff_form::Dialog_staff_form(QWidget *parent, db_manager *dashboard_db, 
     setup_uart();
     QObject::connect(port, SIGNAL(readyRead()), this, SLOT(text_Reading()));
     port->write("rfid\n");
-    qDebug() << "rfid\n";
 
     //대시보드 변수 생성, 사용 불가 설정.
     dashboard = parent;
