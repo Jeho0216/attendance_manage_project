@@ -47,7 +47,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -74,6 +74,58 @@
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_6">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>73</y>
+        <width>67</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>카드번호</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_state_card">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>70</y>
+        <width>171</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_7">
+      <property name="geometry">
+       <rect>
+        <x>87</x>
+        <y>114</y>
+        <width>41</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>이름</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_state_name">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>110</y>
+        <width>171</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
       </property>
      </widget>
     </widget>
@@ -163,11 +215,6 @@
        <attribute name="horizontalHeaderStretchLastSection">
         <bool>true</bool>
        </attribute>
-       <row>
-        <property name="text">
-         <string>1</string>
-        </property>
-       </row>
        <column>
         <property name="text">
          <string>출근 일시</string>
@@ -183,16 +230,6 @@
          <string>상태</string>
         </property>
        </column>
-       <item row="0" column="0">
-        <property name="text">
-         <string>2019.06.21 09:00</string>
-        </property>
-       </item>
-       <item row="0" column="1">
-        <property name="text">
-         <string>2019.06.21 18:00</string>
-        </property>
-       </item>
       </widget>
       <widget class="QLineEdit" name="lineEdit_name">
        <property name="geometry">
@@ -368,6 +405,7 @@
     </property>
    </widget>
   </widget>
+  <widget class="QStatusBar" name="statusBar"/>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
@@ -378,7 +416,16 @@
     </rect>
    </property>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
+  <action name="action">
+   <property name="text">
+    <string>설정</string>
+   </property>
+  </action>
+  <action name="action_2">
+   <property name="text">
+    <string>종료</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
