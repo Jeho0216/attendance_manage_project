@@ -27,6 +27,7 @@ private:
     Dialog_staff_form *staff_form;
     db_manager *database_1;
     QString read_string;
+    int selected_row;
 
 private slots:
     void text_Reading();

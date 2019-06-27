@@ -69,6 +69,8 @@ void MainWindow::on_tableWidget_cellClicked(int row, int column)
     QString name, phone, card_id;
     QString *staff_info;
 
+    selected_row = row;
+
     if(column == 0){
         name = ui->tableWidget->currentItem()->text();
         phone = ui->tableWidget->item(row, 1)->text();
@@ -93,9 +95,10 @@ void MainWindow::on_pushButton_del_clicked()
         ui->lineEdit_age->setText("");
         ui->lineEdit_card->setText("");
         ui->lineEdit_phone->setText("");
+        ui->tableWidget->removeRow(selected_row);
         database_1->print_staff(ui->tableWidget);
     }
-    else{       //실패
+        else{       //실패
         QMessageBox::warning(this, "warning", "정보 삭제에 실패했습니다.");
     }
 }
