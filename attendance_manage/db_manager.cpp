@@ -105,6 +105,19 @@ void db_manager::print_staff(QTableWidget *table){
     }
 }
 
+int db_manager::count_staff(QString input_card_id){
+    QSqlQuery query;
+    query.prepare("select count(*) from staff_list where card_id=:card");
+    query.bindValue(":card", input_card_id);
+
+    if(query.exec()){
+        qDebug() << query.lastQuery() << endl;
+        qDebug() << input_card_id << " number : " << QString::number(query.value(0).toInt()) << endl;;
+    }
+
+
+}
+
 //사원의 이름으로 card_id 조회
 QString db_manager::get_card_id(QString name, QString phone){
     QSqlQuery query;
@@ -126,10 +139,10 @@ QString db_manager::get_card_id(QString name, QString phone){
 QString *db_manager::get_staff_info(QString search_card_id){
 
     QSqlQuery query;
+    query.prepare("select * from staff_list where card_id='" + search_card_id + "'");
 
-    query.exec("select * from staff_list where card_id='" + search_card_id + "'");
+    query.exec();
     query.first();
-
     staff_info[0] = query.value("name").toString();
     staff_info[1] = query.value("age").toString();
     staff_info[2] = query.value("phone").toString();
