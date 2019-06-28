@@ -36,10 +36,6 @@ void MainWindow::show_time(){
     QString date_text = date.toString("yyyy 년 MM 월 dd 일  dddd");
     QString time_text = time.toString("hh : mm : ss");
 
-    //------------------------테스트코드 : 삭제
-    QString string = date.toString("yyMMdd") + time.toString("hhmm");
-    //------------------------테스트코드 끝
-
     ui->label_date->setText(date_text);
     ui->label_time->setText(time_text);
 }
@@ -48,6 +44,7 @@ void MainWindow::on_tabWidget_tabBarClicked(int index)
 {
     if(index == 1){
         //port->close();      //사원등록용 port open하기 전에 기존에 open된 port 닫기.
+        disconnect(port, SIGNAL(readyRead()), this, SLOT(text_Reading()));
         ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);        //테이블 수정(edit)불가 설정.
         database_1->print_staff(ui->tableWidget);
     }
@@ -109,20 +106,26 @@ void MainWindow::on_pushButton_del_clicked()
 //UART통신 함수
 void MainWindow::text_Reading(){
     QByteArray read_data;
-    QString *staff_info;
+    QString *staff_info;f_
+            int index;      //데이터 포맷 확인용.
 
-    read_data = port->readAll();
+            read_data = port->readAll();
 
-    read_string += QString(read_data);
+            read_string += QString(read_data);
 
-    if(strchr(read_data.data(), '\n')){
-        read_string.chop(1);        //마지막 개행문자 제거.
-        qDebug() << read_string << " : dashboard\n";
-        //입력된 카드의 사원 정보 출력
-        staff_info = database_1->get_staff_info(read_string);
+            if(strchr(read_data.data(), '\n')){
+                read_string.chop(1);        //마지막 개행문자 제거.
+                qDebug() << read_string << " : dashboard\n";
+                //입력된 카드의 사원 정보 출력
+                staff_info = database_1->get_stafinfo(read_string);
         ui->lineEdit_state_name->setText(staff_info[0]);
         ui->lineEdit_state_card->setText(staff_info[3]);
-
+        //사원 출근시간 데이터베이스에 저장. -> 시간 입력시에만 저장되도록 플래그 지정필요.
+        index = read_string.indexOf("in:");
+        if(index != -1){
+            read_string.remove(index, 3);
+            database_1->add_clock_in_out(read_string, true);
+        }
         read_string = "";
     }
 }
