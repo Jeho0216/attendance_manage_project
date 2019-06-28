@@ -36,6 +36,10 @@ void MainWindow::show_time(){
     QString date_text = date.toString("yyyy 년 MM 월 dd 일  dddd");
     QString time_text = time.toString("hh : mm : ss");
 
+    //------------------------테스트코드 : 삭제
+    QString string = date.toString("yyMMdd") + time.toString("hhmm");
+    //------------------------테스트코드 끝
+
     ui->label_date->setText(date_text);
     ui->label_time->setText(time_text);
 }
@@ -44,7 +48,6 @@ void MainWindow::on_tabWidget_tabBarClicked(int index)
 {
     if(index == 1){
         //port->close();      //사원등록용 port open하기 전에 기존에 open된 port 닫기.
-        disconnect(port, SIGNAL(readyRead()), this, SLOT(text_Reading()));
         ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);        //테이블 수정(edit)불가 설정.
         database_1->print_staff(ui->tableWidget);
     }
