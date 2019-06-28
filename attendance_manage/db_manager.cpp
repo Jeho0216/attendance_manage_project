@@ -50,11 +50,21 @@ bool db_manager::add_clock_in_out(QString input_card_id, bool isClock_in){
     QString time_text = date.toString("yyMMdd") + time.toString("hhmm");
 
     if(isClock_in == true){     //출근시간 기록
-        //insert into attendance_state(card_id, clock_in) values('11-11-11-11-11', '시간');
-        //query = "insert into attendance_state(card_id, clock_in) values(";
+        query.prepare("insert into attendance_state(card_id, clock_in) values(:card, :clock_in)");
+        query.bindValue(":card", input_card_id);
+        query.bindValue(":clock_in", time_text);
+        if(query.exec()){
+            qDebug() << "Test : " << query.lastQuery().toUtf8() << endl;
+        }
+        else{
+            qDebug() << "Test : " << query.lastError().text() << endl;
+            //insert into attendance_state(card_id, clock_in) values('11-11-11-11-11', '시간');
+            //query = "insert into attendance_state(card_id, clock_in) values(";
+        }
     }
     else if(isClock_in == false){       //퇴근시간 기록
         //update ~~~~~
+
     }
 }
 
