@@ -64,7 +64,6 @@ bool db_manager::add_clock_in_out(QString input_card_id, bool isClock_in){
     }
     else if(isClock_in == false){       //퇴근시간 기록
         //update ~~~~~
-
     }
 }
 
@@ -110,7 +109,6 @@ QString db_manager::get_card_id(QString name, QString phone){
     QSqlQuery query;
     QString query_str = "select card_id from staff_list where name='" + name + "'and phone='" + phone + "'";
     qDebug() << query_str << endl;
-    int i = 0;
 
     query.exec(query_str);
 
@@ -128,6 +126,7 @@ QString *db_manager::get_staff_info(QString search_card_id){
     QSqlQuery query;
 
     query.exec("select * from staff_list where card_id='" + search_card_id + "'");
+    qDebug() << query.lastQuery() << endl;
     query.first();
 
     staff_info[0] = query.value("name").toString();
