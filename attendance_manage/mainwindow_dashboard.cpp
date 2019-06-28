@@ -52,14 +52,17 @@ void MainWindow::on_tabWidget_tabBarClicked(int index)
         database_1->print_staff(ui->tableWidget);
     }
     else if(index == 0){
+
         //setup_uart();       //출/퇴근 체크용 UART PORT연결.
+        connect(port, SIGNAL(readyRead()), this, SLOT(text_Reading()));      //staff_form text_Reading() 실행 금지
         port->write("in_time\n");
     }
 }
 
 void MainWindow::on_pushButton_add_clicked()
 {
-    staff_form = new Dialog_staff_form(this, database_1, ui->tableWidget);
+    staff_form = new Dialog_staff_form(this, database_1, ui->tableWidget, port);
+    disconnect(port, SIGNAL(readyRead()), this, SLOT(text_Reading()));
     staff_form->show();
 }
 
@@ -114,7 +117,7 @@ void MainWindow::text_Reading(){
 
     if(strchr(read_data.data(), '\n')){
         read_string.chop(1);        //마지막 개행문자 제거.
-        qDebug() << read_string ;
+        qDebug() << read_string << " : dashboard\n";
         //입력된 카드의 사원 정보 출력
         staff_info = database_1->get_staff_info(read_string);
         ui->lineEdit_state_name->setText(staff_info[0]);
