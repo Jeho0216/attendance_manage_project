@@ -566,6 +566,8 @@ void Start_lcd_Task(void const * argument)
 	  //printf("lcd_id_flag : %d\n", lcd_id_flag);
 	if(lcd_id_flag == YES){		//When RFID card is tagged,
 		I2C_LCD_write_string_XY(1, 0, card_id);
+		osDelay(300);
+		I2C_LCD_write_string_XY(1, 0, "              ");
 		lcd_id_flag = NO;
 	}
     osDelay(1);
@@ -619,7 +621,7 @@ void Start_inout_Task(void const * argument)
 	  if(in_out_flag == YES){
 		  if(MFRC522_Check(card_id_buff) == MI_OK){
 			  sprintf(card_id, "%02X-%02X-%02X-%02X-%02X", card_id_buff[0], card_id_buff[1], card_id_buff[2], card_id_buff[3], card_id_buff[4]);
-			  printf("%s\n", card_id);		//send card id to Qt.
+			  printf("in:%s\n", card_id);		//send card id to Qt.
 			  lcd_id_flag = YES;		//print card id on LCD.
 			  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
 			  osDelay(50);
