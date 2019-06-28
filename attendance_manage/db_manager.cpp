@@ -113,7 +113,6 @@ QString db_manager::get_card_id(QString name, QString phone){
     QSqlQuery query;
     QString query_str = "select card_id from staff_list where name='" + name + "'and phone='" + phone + "'";
     qDebug() << query_str << endl;
-    int i = 0;
 
     query.exec(query_str);
 
@@ -129,9 +128,9 @@ QString db_manager::get_card_id(QString name, QString phone){
 QString *db_manager::get_staff_info(QString search_card_id){
 
     QSqlQuery query;
-    query.prepare("select * from staff_list where card_id='" + search_card_id + "'");
 
-    query.exec();
+    query.exec("select * from staff_list where card_id='" + search_card_id + "'");
+    qDebug() << query.lastQuery() << endl;
     query.first();
     staff_info[0] = query.value("name").toString();
     staff_info[1] = query.value("age").toString();

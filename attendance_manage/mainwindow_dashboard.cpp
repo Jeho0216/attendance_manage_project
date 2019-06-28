@@ -118,18 +118,29 @@ void MainWindow::text_Reading(){
 
     if(strchr(read_data.data(), '\n')){
         read_string.chop(1);        //마지막 개행문자 제거.
+
+        index = read_string.indexOf("in:");
+        if(index != -1){
+            read_string.remove(index, 3);
+            database_1->add_clock_in_out(read_string, true);
+        }
+
         qDebug() << read_string << " : dashboard\n";
         //입력된 카드의 사원 정보 출력
         staff_info = database_1->get_staff_info(read_string);
         ui->lineEdit_state_name->setText(staff_info[0]);
         ui->lineEdit_state_card->setText(staff_info[3]);
         //사원 출근시간 데이터베이스에 저장. -> 시간 입력시에만 저장되도록 플래그 지정필요.
+
 //        index = read_string.indexOf("in:");
 //        if(index != -1){
 //            database_1->count_staff(read_string);
 //            read_string.remove(index, 3);
 //            database_1->add_clock_in_out(read_string, true);
 //        }
+
+
+
         read_string = "";
     }
 }
