@@ -18,12 +18,13 @@ class Dialog_staff_form : public QDialog
     Q_OBJECT
 
 public:
-    explicit Dialog_staff_form(QWidget *parent, db_manager *dashboard_db, QTableWidget *table);
+    explicit Dialog_staff_form(QWidget *parent, db_manager *dashboard_db, QTableWidget *table, QSerialPort *input_port);
     ~Dialog_staff_form();
     void closeEvent(QCloseEvent *event);
 
     //UART용 변수
     QSerialPort *port;
+
     QString read_string;
 
     //DB용 변수

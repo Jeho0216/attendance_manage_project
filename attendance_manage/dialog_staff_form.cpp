@@ -1,7 +1,7 @@
 #include "dialog_staff_form.h"
 #include "ui_dialog_staff_form.h"
 
-Dialog_staff_form::Dialog_staff_form(QWidget *parent, db_manager *dashboard_db, QTableWidget *table) :
+Dialog_staff_form::Dialog_staff_form(QWidget *parent, db_manager *dashboard_db, QTableWidget *table, QSerialPort *input_port) :
     QDialog(parent),
     ui(new Ui::Dialog_staff_form)
 {
@@ -17,8 +17,9 @@ Dialog_staff_form::Dialog_staff_form(QWidget *parent, db_manager *dashboard_db, 
     table_dashboard = table;
 
     //RFID 태그 연결
-    port = new QSerialPort();
-    setup_uart();
+    //port = new QSerialPort();
+    //setup_uart();
+    port = input_port;
     QObject::connect(port, SIGNAL(readyRead()), this, SLOT(text_Reading()));
     port->write("rfid\n");
 
@@ -45,7 +46,7 @@ void Dialog_staff_form::text_Reading(){
 
     if(strchr(read_data.data(), '\n')){
         read_string.chop(1);        //마지막 개행문자 제거.
-        qDebug() << read_string ;
+        qDebug() << read_string << " : dialog_staff_form\n";
         ui->lineEdit_card_id->setText(read_string);     //card id 칸에 출력
         read_string = "";
     }
@@ -84,16 +85,17 @@ void Dialog_staff_form::on_pushButton_accept_clicked()
     //전부 입력되었을 경우,
     //데이터베이스에 추가하는 코드 필요.
     result = database_2->add_staff(input_name, input_age, input_phone, input_card_id);
+    disconnect(port, SIGNAL(readyRead()), this, SLOT(text_Reading()));      //staff_form text_Reading() 실행 금지
 
     if(result == true){
         dashboard->setEnabled(true);
         database_2->print_staff(table_dashboard);
         QMessageBox::information(this, "success", "등록성공");
-        port->close();
+        //port->close();
         this->close();
     }
     else{
-        QMessageBox::warning(this, "Inser Error", "중복된 RFID카드 입니다.");
+        QMessageBox::warning(this, "Insert Error", "중복된 RFID카드 입니다.");
         port->write("rfid\n");
         return ;
     }
@@ -101,7 +103,8 @@ void Dialog_staff_form::on_pushButton_accept_clicked()
 
 void Dialog_staff_form::closeEvent(QCloseEvent *event){
     dashboard->setEnabled(true);
-    port->close();
+    disconnect(port, SIGNAL(readyRead()), this, SLOT(text_Reading()));      //staff_form text_Reading() 실행 금지
+    //port->close();
     this->close();
 }
 
