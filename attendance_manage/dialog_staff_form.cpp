@@ -1,7 +1,7 @@
 #include "dialog_staff_form.h"
 #include "ui_dialog_staff_form.h"
 
-Dialog_staff_form::Dialog_staff_form(QWidget *parent, db_manager *dashboard_db, QTableWidget *table) :
+Dialog_staff_form::Dialog_staff_form(QWidget *parent, db_manager *dashboard_db, QTableWidget *table, QSerialPort *input_port) :
     QDialog(parent),
     ui(new Ui::Dialog_staff_form)
 {
@@ -17,8 +17,9 @@ Dialog_staff_form::Dialog_staff_form(QWidget *parent, db_manager *dashboard_db, 
     table_dashboard = table;
 
     //RFID 태그 연결
-    port = new QSerialPort();
-    setup_uart();
+    //port = new QSerialPort();
+    //setup_uart();
+    port = input_port;
     QObject::connect(port, SIGNAL(readyRead()), this, SLOT(text_Reading()));
     port->write("rfid\n");
 
@@ -93,7 +94,7 @@ void Dialog_staff_form::on_pushButton_accept_clicked()
         this->close();
     }
     else{
-        QMessageBox::warning(this, "Inser Error", "중복된 RFID카드 입니다.");
+        QMessageBox::warning(this, "Insert Error", "중복된 RFID카드 입니다.");
         port->write("rfid\n");
         return ;
     }
