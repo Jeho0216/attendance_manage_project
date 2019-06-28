@@ -79,8 +79,8 @@
      <widget class="QLabel" name="label_6">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>73</y>
+        <x>20</x>
+        <y>70</y>
         <width>67</width>
         <height>17</height>
        </rect>
@@ -92,8 +92,8 @@
      <widget class="QLineEdit" name="lineEdit_state_card">
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>70</y>
+        <x>90</x>
+        <y>67</y>
         <width>171</width>
         <height>25</height>
        </rect>
@@ -105,8 +105,8 @@
      <widget class="QLabel" name="label_7">
       <property name="geometry">
        <rect>
-        <x>87</x>
-        <y>114</y>
+        <x>47</x>
+        <y>111</y>
         <width>41</width>
         <height>17</height>
        </rect>
@@ -118,8 +118,8 @@
      <widget class="QLineEdit" name="lineEdit_state_name">
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>110</y>
+        <x>90</x>
+        <y>107</y>
         <width>171</width>
         <height>25</height>
        </rect>
@@ -127,6 +127,68 @@
       <property name="readOnly">
        <bool>true</bool>
       </property>
+     </widget>
+     <widget class="QLabel" name="label_8">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>210</y>
+        <width>251</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>15</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>오늘의 출/퇴근 현황</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="QTableWidget" name="tableWidget_list">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>260</y>
+        <width>551</width>
+        <height>331</height>
+       </rect>
+      </property>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>135</number>
+      </attribute>
+      <attribute name="horizontalHeaderStretchLastSection">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="verticalHeaderStretchLastSection">
+       <bool>false</bool>
+      </attribute>
+      <column>
+       <property name="text">
+        <string>이름</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>출근시간</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>퇴근시간</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>상태</string>
+       </property>
+      </column>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_2">
@@ -402,19 +464,6 @@
     </property>
     <property name="text">
      <string>(주) 가나다라마바사</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_8">
-    <property name="geometry">
-     <rect>
-      <x>410</x>
-      <y>40</y>
-      <width>341</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>TextLabel</string>
     </property>
    </widget>
   </widget>

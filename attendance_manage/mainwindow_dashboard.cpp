@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //--------------------------------------
     //데이터베이스 연결 코드 2019.06.20
     database_1 = new db_manager("attendance_mng");
-
+    database_1->print_dashboard_list(ui->tableWidget_list);
     //시리얼 포트 추가 코드 2019.06.26
     port = new QSerialPort();
     setup_uart();
@@ -36,10 +36,6 @@ void MainWindow::show_time(){
     QString date_text = date.toString("yyyy 년 MM 월 dd 일  dddd");
     QString time_text = time.toString("hh : mm : ss");
 
-    //------------------------테스트코드 : 삭제
-    QString string = date.toString("yyMMdd") + time.toString("hhmm");
-    //------------------------테스트코드 끝
-
     ui->label_date->setText(date_text);
     ui->label_time->setText(time_text);
 }
@@ -47,13 +43,10 @@ void MainWindow::show_time(){
 void MainWindow::on_tabWidget_tabBarClicked(int index)
 {
     if(index == 1){
-        //port->close();      //사원등록용 port open하기 전에 기존에 open된 port 닫기.
         ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);        //테이블 수정(edit)불가 설정.
         database_1->print_staff(ui->tableWidget);
     }
     else if(index == 0){
-
-        //setup_uart();       //출/퇴근 체크용 UART PORT연결.
         connect(port, SIGNAL(readyRead()), this, SLOT(text_Reading()));      //dashboard text_Reading()
         port->write("in_time\n");
     }
@@ -118,29 +111,25 @@ void MainWindow::text_Reading(){
 
     if(strchr(read_data.data(), '\n')){
         read_string.chop(1);        //마지막 개행문자 제거.
-
+        qDebug() << read_string << endl;
+        //출/퇴근 등록에 대한 입력일 경우,
         index = read_string.indexOf("in:");
         if(index != -1){
             read_string.remove(index, 3);
-            database_1->add_clock_in_out(read_string, true);
+            //입력한 카드로 등록된 사원이 있을 때만 실행.
+            if(database_1->count_staff(read_string) != 0){
+                database_1->add_clock_in_out(read_string, true);
+                qDebug() << read_string << " 출근 등록\n";
+                database_1->print_dashboard_list(ui->tableWidget_list);
+                //입력된 카드의 사원 정보 출력
+                staff_info = database_1->get_staff_info(read_string);
+                ui->lineEdit_state_name->setText(staff_info[0]);
+                ui->lineEdit_state_card->setText(staff_info[3]);
+            }
+            else{
+                QMessageBox::warning(this, "warning", "등록된 사원이 아닙니다.");
+            }
         }
-
-        qDebug() << read_string << " : dashboard\n";
-        //입력된 카드의 사원 정보 출력
-        staff_info = database_1->get_staff_info(read_string);
-        ui->lineEdit_state_name->setText(staff_info[0]);
-        ui->lineEdit_state_card->setText(staff_info[3]);
-        //사원 출근시간 데이터베이스에 저장. -> 시간 입력시에만 저장되도록 플래그 지정필요.
-
-//        index = read_string.indexOf("in:");
-//        if(index != -1){
-//            database_1->count_staff(read_string);
-//            read_string.remove(index, 3);
-//            database_1->add_clock_in_out(read_string, true);
-//        }
-
-
-
         read_string = "";
     }
 }

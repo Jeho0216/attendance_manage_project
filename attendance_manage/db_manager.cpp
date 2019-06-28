@@ -50,8 +50,17 @@ bool db_manager::add_clock_in_out(QString input_card_id, bool isClock_in){
     QString time_text = date.toString("yyMMdd") + time.toString("hhmm");
 
     if(isClock_in == true){     //출근시간 기록
-        //insert into attendance_state(card_id, clock_in) values('11-11-11-11-11', '시간');
-        //query = "insert into attendance_state(card_id, clock_in) values(";
+        query.prepare("insert into attendance_state(card_id, clock_in) values(:card, :time_in)");
+        query.bindValue(":card", input_card_id);
+        query.bindValue(":time_in", time_text);
+        if(query.exec()){
+            qDebug() << query.lastQuery() << endl;
+            return true;
+        }
+        else{
+            qDebug() << query.lastError();
+            return false;
+        }
     }
     else if(isClock_in == false){       //퇴근시간 기록
         //update ~~~~~
@@ -95,17 +104,54 @@ void db_manager::print_staff(QTableWidget *table){
     }
 }
 
+//카드에 해당하는 사원 찾기
 int db_manager::count_staff(QString input_card_id){
     QSqlQuery query;
-    query.prepare("select count(*) from staff_list where card_id=:card");
-    query.bindValue(":card", input_card_id);
+    int rows = 0;
 
-    if(query.exec()){
-        qDebug() << query.lastQuery() << endl;
-        qDebug() << input_card_id << " number : " << QString::number(query.value(0).toInt()) << endl;;
+    query.exec("select count(*) from staff_list where card_id='" + input_card_id + "'");
+    if(query.next()){       //Query.next() 이후에 count값 저장해야 정상적으로 값 저장됨.
+        rows = query.value(0).toInt();
     }
+    qDebug() << input_card_id << " number : " << QString::number(rows) << endl;
+    return rows;
+}
 
+//대시보드의 현황 탭에 출/퇴근 현황 테이블  출력.
+void db_manager::print_dashboard_list(QTableWidget *table){
+    uint8_t row_count = 0;
+    QSqlQuery query;
+    QString query_str;
+    qDebug() << "start print dashbord" << endl;
 
+    query_str = "select staff_list.name, attendance_state.clock_in from staff_list join attendance_state where staff_list.card_id=attendance_state.card_id";
+
+    if(query.exec(query_str)){
+        qDebug() << query.lastQuery() << endl;
+        while(query.next()){
+            QTableWidgetItem *table_name = new QTableWidgetItem();
+            QTableWidgetItem *table_clock_in = new QTableWidgetItem();
+            QTableWidgetItem *table_clock_out = new QTableWidgetItem();
+            row_count++;
+            table->setRowCount(row_count);
+
+            QString name = query.value("name").toString();
+            QString clock_in = query.value("clock_in").toString();
+            QString clock_out = query.value("clock_out").toString();
+            table_name->setText(name);
+            table_clock_in->setText(clock_in);
+            table_clock_out->setText(clock_out);
+
+            qDebug() << "name : " << name << "  clock_in : " << clock_in << "  clock_out : " << clock_out << endl;
+
+            table->setItem(row_count-1, 0, table_name);
+            table->setItem(row_count-1, 1, table_clock_in);
+            table->setItem(row_count-1, 2, table_clock_out);
+        }
+    }
+    else{
+        qDebug() << query.lastError() << endl;
+    }
 }
 
 //사원의 이름으로 card_id 조회
