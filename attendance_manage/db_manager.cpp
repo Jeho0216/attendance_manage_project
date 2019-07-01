@@ -42,27 +42,36 @@ bool db_manager::add_staff(QString input_name, int input_age, QString input_phon
 }
 
 //태그된 card_id로 출근/퇴근 기록을 데이터베이스에 저장
-bool db_manager::add_clock_in_out(QString input_card_id, bool isClock_in){
+bool db_manager::add_clock_in_out(QString input_card_id, int state){
     QSqlQuery query;
     QDate date = QDate::currentDate();
     QTime time = QTime::currentTime();
 
     QString time_text = date.toString("yyMMdd") + time.toString("hhmm");
 
-    if(isClock_in == true){     //출근시간 기록
-        query.prepare("insert into attendance_state(card_id, clock_in) values(:card, :time_in)");
+    query.exec("update staff_list set last_clock_in='" + time_text + "' where card_id='" + input_card_id + "'");
+
+    if(state == 0 || state == 2){     //출근시간 기록
+        query.prepare("insert into attendance_state(card_id, clock_in) values(:card, :time_in)");       //사원의 출입시간 등록
         query.bindValue(":card", input_card_id);
         query.bindValue(":time_in", time_text);
         if(query.exec()){
             qDebug() << query.lastQuery() << endl;
+            if(query.exec("update staff_list set state=1 where card_id='" + input_card_id + "'")){      //사원의 상태(state)변경
+                qDebug() << query.lastQuery() << endl;
+            }
+            else {
+                qDebug() << query.lastError();
+            }
+
             return true;
         }
         else{
-            qDebug() << query.lastError();
+
             return false;
         }
     }
-    else if(isClock_in == false){       //퇴근시간 기록
+    else if(state == 1){       //퇴근시간 기록
         //update ~~~~~
     }
 }
@@ -102,6 +111,21 @@ void db_manager::print_staff(QTableWidget *table){
         table->setItem(row_count-1, 0, table_name);
         table->setItem(row_count-1, 1, table_phone);
     }
+}
+
+//출/퇴근 시, 카드에 해당하는 사원의 상태 확인. 0: 신규, 1: 출근, 2: 퇴근
+int db_manager::print_staff_state(QString input_card_id){
+    QSqlQuery query;
+    int staff_state = 0;
+
+    query.exec("select state from staff_list where card_id='" + input_card_id + "'");
+    while(query.next()){
+        query.first();
+        staff_state = query.value("state").toInt();
+    }
+    qDebug() << "card_id : " << input_card_id << staff_state << endl;
+
+    return staff_state;
 }
 
 //카드에 해당하는 사원 찾기

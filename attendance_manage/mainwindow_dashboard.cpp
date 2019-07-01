@@ -104,6 +104,7 @@ void MainWindow::text_Reading(){
     QByteArray read_data;
     QString *staff_info;
     int index;      //데이터 포맷 확인용.
+    int state;
 
     read_data = port->readAll();
 
@@ -112,13 +113,16 @@ void MainWindow::text_Reading(){
     if(strchr(read_data.data(), '\n')){
         read_string.chop(1);        //마지막 개행문자 제거.
         qDebug() << read_string << endl;
+
         //출/퇴근 등록에 대한 입력일 경우,
         index = read_string.indexOf("in:");
         if(index != -1){
             read_string.remove(index, 3);
             //입력한 카드로 등록된 사원이 있을 때만 실행.
             if(database_1->count_staff(read_string) != 0){
-                database_1->add_clock_in_out(read_string, true);
+                //태그한 사원의 상태 조회
+                state = database_1->print_staff_state(read_string);
+                database_1->add_clock_in_out(read_string, state);
                 qDebug() << read_string << " 출근 등록\n";
                 database_1->print_dashboard_list(ui->tableWidget_list);
                 //입력된 카드의 사원 정보 출력
