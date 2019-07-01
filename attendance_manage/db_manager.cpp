@@ -46,15 +46,15 @@ bool db_manager::add_clock_in_out(QString input_card_id, int state){
     QSqlQuery query;
     QDate date = QDate::currentDate();
     QTime time = QTime::currentTime();
-
+    QString last_time;      //퇴근시간 입력을 위해 출근시간 확인.
     QString time_text = date.toString("yyMMdd") + time.toString("hhmm");
 
-    query.exec("update staff_list set last_clock_in='" + time_text + "' where card_id='" + input_card_id + "'");
-
     if(state == 0 || state == 2){     //출근시간 기록
+        qDebug() << "출근 등록\n";
         query.prepare("insert into attendance_state(card_id, clock_in) values(:card, :time_in)");       //사원의 출입시간 등록
         query.bindValue(":card", input_card_id);
         query.bindValue(":time_in", time_text);
+
         if(query.exec()){
             qDebug() << query.lastQuery() << endl;
             if(query.exec("update staff_list set state=1 where card_id='" + input_card_id + "'")){      //사원의 상태(state)변경
@@ -63,16 +63,33 @@ bool db_manager::add_clock_in_out(QString input_card_id, int state){
             else {
                 qDebug() << query.lastError();
             }
-
+            query.exec("update staff_list set last_clock_in='" + time_text + "' where card_id='" + input_card_id + "'");
             return true;
         }
         else{
-
             return false;
         }
     }
     else if(state == 1){       //퇴근시간 기록
-        //update ~~~~~
+        qDebug() << "퇴근 등록\n";
+        query.exec("select last_clock_in from staff_list where card_id='" + input_card_id + "'");
+        if(query.next()){
+            last_time = query.value("last_clock_in").toString();                                                                            //입력된 사원의 최근 출입시간 저장.
+        }
+        if(query.exec("update staff_list set state=2 where card_id='" + input_card_id + "'")){               //사원의 상태 변경 -> 퇴근
+            qDebug() << query.lastQuery() << endl;
+        }
+        else {
+            qDebug() << query.lastError().text() << endl;
+        }
+        //출근시간, 사원번호가 일치하는 사원의 퇴근시간 추가.
+        if(query.exec("update attendance_state set clock_out='" + time_text + "' where clock_in='" + last_time + "' AND card_id='" + input_card_id + "'")){
+            qDebug() << query.lastQuery() << endl;
+        }
+        else {
+            qDebug() << query.lastError().text() << endl;
+        }
+        query.exec("update staff_list set last_clock_in='" + time_text + "' where card_id='" + input_card_id + "'");
     }
 }
 
@@ -148,7 +165,7 @@ void db_manager::print_dashboard_list(QTableWidget *table){
     QString query_str;
     qDebug() << "start print dashbord" << endl;
 
-    query_str = "select staff_list.name, attendance_state.clock_in from staff_list join attendance_state where staff_list.card_id=attendance_state.card_id";
+    query_str = "select staff_list.name, attendance_state.clock_in, attendance_state.clock_out from staff_list join attendance_state where staff_list.card_id=attendance_state.card_id";
 
     if(query.exec(query_str)){
         qDebug() << query.lastQuery() << endl;

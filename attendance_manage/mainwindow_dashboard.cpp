@@ -123,7 +123,7 @@ void MainWindow::text_Reading(){
                 //태그한 사원의 상태 조회
                 state = database_1->print_staff_state(read_string);
                 database_1->add_clock_in_out(read_string, state);
-                qDebug() << read_string << " 출근 등록\n";
+
                 database_1->print_dashboard_list(ui->tableWidget_list);
                 //입력된 카드의 사원 정보 출력
                 staff_info = database_1->get_staff_info(read_string);
