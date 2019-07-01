@@ -48,6 +48,9 @@ void MainWindow::on_tabWidget_tabBarClicked(int index)
     }
     else if(index == 0){
         connect(port, SIGNAL(readyRead()), this, SLOT(text_Reading()));      //dashboard text_Reading()
+
+        ui->tableWidget_info->setRowCount(0);
+
         port->write("in_time\n");
     }
 }
@@ -78,6 +81,7 @@ void MainWindow::on_tableWidget_cellClicked(int row, int column)
         ui->lineEdit_age->setText(staff_info[1]);
         ui->lineEdit_phone->setText(staff_info[2]);
         ui->lineEdit_card->setText(staff_info[3]);
+        database_1->print_dashboard_staff_list(ui->tableWidget_info, card_id);
     }
 }
 

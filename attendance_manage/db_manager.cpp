@@ -191,8 +191,36 @@ void db_manager::print_dashboard_list(QTableWidget *table){
         }
     }
     else{
-        qDebug() << query.lastError() << endl;
+        qDebug() << query.lastError().text() << endl;
     }
+}
+
+//대시보드의 사원관리 탭에 사원별 출/퇴근 시간 출력.
+void db_manager::print_dashboard_staff_list(QTableWidget *table, QString input_card_id){
+    QSqlQuery query;
+    uint8_t row_count = 0;
+
+    if(query.exec("select * from attendance_state where card_id='" + input_card_id + "'")){
+        qDebug() << query.lastQuery() << endl;
+        while(query.next()){
+            QTableWidgetItem *table_clock_in = new QTableWidgetItem();
+            QTableWidgetItem *table_clock_out = new QTableWidgetItem();
+            row_count++;
+            table->setRowCount(row_count);
+
+            QString clock_in = query.value("clock_in").toString();
+            QString clock_out = query.value("clock_out").toString();
+            table_clock_in->setText(clock_in);
+            table_clock_out->setText(clock_out);
+
+            table->setItem(row_count-1, 0, table_clock_in);
+            table->setItem(row_count-1, 1, table_clock_out);
+        }
+    }
+    else {
+        qDebug() << query.lastError().text() << endl;
+    }
+
 }
 
 //사원의 이름으로 card_id 조회
