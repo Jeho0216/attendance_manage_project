@@ -8,6 +8,7 @@
 #include <QSerialPort>          //2019.06.26 LJH
 #include "db_manager.h"     //2019.06.20 LJH
 #include "dialog_staff_form.h"      //2019.06.18 LJH
+#include "form_set_clock.h"     //2019.07.02    LJH
 
 namespace Ui {
 class MainWindow;
@@ -25,6 +26,7 @@ private:
     Ui::MainWindow *ui;
     QSerialPort *port;
     Dialog_staff_form *staff_form;
+    Form_set_clock *clock_form;
     db_manager *database_1;
     QString read_string;
     QString set_clock_in;       //사용자가 설정한  출근시간.
@@ -34,7 +36,6 @@ private slots:
     void text_Reading();
     void setup_uart();
     void show_time();
-    void on_pushButton_clicked();
     void on_tabWidget_tabBarClicked(int index);
     void on_pushButton_add_clicked();
     void on_tableWidget_cellClicked(int row, int column);

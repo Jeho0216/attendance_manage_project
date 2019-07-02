@@ -25,6 +25,7 @@ public:
     void print_dashboard_staff_list(QTableWidget *table, QString input_card_id);        //대시보드의 사원관리 탭에 사원별 출/퇴근 현황 테이블 출력.
     QString get_card_id(QString name, QString phone);       //이름과 전화번호로 card_id 검색
     QString *get_staff_info(QString search_card_id);
+    void insert_time_string(QString *time_str);         //0000000000로 입력되는 시간 문자열에 년, 월, 일, 시, 분 문자 추가하는 함수.
 private:
     QSqlDatabase my_db;
     QString card_id;          //조회한 사원 card_id

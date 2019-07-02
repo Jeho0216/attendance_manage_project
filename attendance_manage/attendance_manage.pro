@@ -30,6 +30,7 @@ SOURCES += \
         db_manager.cpp \
         dialog_login.cpp \
         dialog_staff_form.cpp \
+        form_set_clock.cpp \
         main.cpp \
         mainwindow_dashboard.cpp
 
@@ -37,11 +38,13 @@ HEADERS += \
         db_manager.h \
         dialog_login.h \
         dialog_staff_form.h \
+        form_set_clock.h \
         mainwindow_dashboard.h
 
 FORMS += \
         dialog_login.ui \
         dialog_staff_form.ui \
+        form_set_clock.ui \
         mainwindow_dashboard.ui
 
 # Default rules for deployment.

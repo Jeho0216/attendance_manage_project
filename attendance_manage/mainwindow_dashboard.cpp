@@ -26,9 +26,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //출근시간 초기화 2019.07.02
     set_clock_in = "0900";
-    set_clock_in.insert(2, "시 ");
-    set_clock_in.insert(6, "분");
-    ui->label_clock_in->setText(set_clock_in);
+    ui->label_clock_in->setText(set_clock_in.left(2) + "시 " + set_clock_in.right(2) + "분");
+
+    //테이블 크기 조절
+    ui->tableWidget_list->setColumnWidth(0, 100);
+    ui->tableWidget_list->setColumnWidth(1, 200);
+    ui->tableWidget_list->setColumnWidth(2, 200);
+    ui->tableWidget_list->setColumnWidth(3, 30);
+
+    ui->tableWidget_info->setColumnWidth(0, 200);
+    ui->tableWidget_info->setColumnWidth(1, 200);
+    ui->tableWidget_info->setColumnWidth(2, 30);
 }
 
 MainWindow::~MainWindow()
@@ -57,6 +65,11 @@ void MainWindow::on_tabWidget_tabBarClicked(int index)
         connect(port, SIGNAL(readyRead()), this, SLOT(text_Reading()));      //dashboard text_Reading()
 
         ui->tableWidget_info->setRowCount(0);
+        ui->tableWidget_info->setEditTriggers(QAbstractItemView::NoEditTriggers);        //테이블 수정(edit)불가 설정.
+
+        qDebug() << "set_clock_in : " << set_clock_in << endl;
+
+        ui->label_clock_in->setText(set_clock_in.left(2) + "시 " + set_clock_in.right(2) + "분");
 
         port->write("in_time\n");
     }
@@ -166,9 +179,11 @@ void MainWindow::setup_uart(){
     }
 }
 
+//메뉴바 설정
 void MainWindow::on_action_3_triggered()
 {
-QMessageBox::information(this, "info", "연결에 실패했습니다.\n");
+    clock_form = new Form_set_clock(nullptr, &set_clock_in, ui->label_clock_in);
+    clock_form->show();
 }
 
 void MainWindow::on_action_triggered()

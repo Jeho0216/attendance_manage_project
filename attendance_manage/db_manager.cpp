@@ -189,7 +189,9 @@ void db_manager::print_dashboard_list(QTableWidget *table){
 
             QString name = query.value("name").toString();
             QString clock_in = query.value("clock_in").toString();
+            insert_time_string(&clock_in);
             QString clock_out = query.value("clock_out").toString();
+            insert_time_string(&clock_out);
             QString status = query.value("status").toString();        //출/퇴근 상태 표현용
             if(status == "0")   status = "지각";
            else                            status = "정상";
@@ -221,16 +223,25 @@ void db_manager::print_dashboard_staff_list(QTableWidget *table, QString input_c
         while(query.next()){
             QTableWidgetItem *table_clock_in = new QTableWidgetItem();
             QTableWidgetItem *table_clock_out = new QTableWidgetItem();
+            QTableWidgetItem *table_status = new QTableWidgetItem();
             row_count++;
             table->setRowCount(row_count);
 
             QString clock_in = query.value("clock_in").toString();
+            insert_time_string(&clock_in);
             QString clock_out = query.value("clock_out").toString();
+            insert_time_string(&clock_out);
+            QString status = query.value("status").toString();
+            if(status == "1")       status = "정상";
+            else                               status = "지각";
+
             table_clock_in->setText(clock_in);
             table_clock_out->setText(clock_out);
+            table_status->setText(status);
 
             table->setItem(row_count-1, 0, table_clock_in);
             table->setItem(row_count-1, 1, table_clock_out);
+            table->setItem(row_count-1, 2, table_status);
         }
     }
     else {
@@ -269,4 +280,12 @@ QString *db_manager::get_staff_info(QString search_card_id){
     staff_info[3] = query.value("card_id").toString();
 
     return staff_info;
+}
+
+void db_manager::insert_time_string(QString *time_str){
+    time_str->insert(2, "년 ");
+    time_str->insert(6, "월 ");
+    time_str->insert(10, "일 ");
+    time_str->insert(14, "시 ");
+    time_str->insert(18, "분");
 }

@@ -40,8 +40,6 @@ private slots:
 
     void on_pushButton_cancel_clicked();
 
-    void on_pushButton_card_clicked();
-
     void setup_uart();
 
     void on_pushButton_rfid_con_clicked();
