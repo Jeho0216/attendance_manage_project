@@ -27,6 +27,7 @@ private:
     Dialog_staff_form *staff_form;
     db_manager *database_1;
     QString read_string;
+    QString set_clock_in;       //사용자가 설정한  출근시간.
     int selected_row;
 
 private slots:
@@ -38,6 +39,8 @@ private slots:
     void on_pushButton_add_clicked();
     void on_tableWidget_cellClicked(int row, int column);
     void on_pushButton_del_clicked();
+    void on_action_3_triggered();
+    void on_action_triggered();
 };
 
 #endif // MAINWINDOW_DASHBOARD_H

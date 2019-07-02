@@ -17,7 +17,7 @@ public:
     ~db_manager();
     bool add_staff(QString input_name, int input_age, QString input_phone, QString input_card);
     bool del_staff(QString del_card_id);
-    bool add_clock_in_out(QString input_card_id, int state);
+    bool add_clock_in_out(QString input_card_id, int state, QString set_clock_in);
     void print_staff(QTableWidget *table);
     int print_staff_state(QString input_card_id);
     int count_staff(QString input_card_id);

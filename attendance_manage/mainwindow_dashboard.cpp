@@ -18,10 +18,17 @@ MainWindow::MainWindow(QWidget *parent) :
     //데이터베이스 연결 코드 2019.06.20
     database_1 = new db_manager("attendance_mng");
     database_1->print_dashboard_list(ui->tableWidget_list);
+
     //시리얼 포트 추가 코드 2019.06.26
     port = new QSerialPort();
     setup_uart();
     QObject::connect(port, SIGNAL(readyRead()), this, SLOT(text_Reading()));
+
+    //출근시간 초기화 2019.07.02
+    set_clock_in = "0900";
+    set_clock_in.insert(2, "시 ");
+    set_clock_in.insert(6, "분");
+    ui->label_clock_in->setText(set_clock_in);
 }
 
 MainWindow::~MainWindow()
@@ -124,9 +131,9 @@ void MainWindow::text_Reading(){
             read_string.remove(index, 3);
             //입력한 카드로 등록된 사원이 있을 때만 실행.
             if(database_1->count_staff(read_string) != 0){
-                //태그한 사원의 상태 조회
+                //태그한 사원의 상태 조회. 0, 1, 2 --> 신규, 출근, 퇴근 상태 확인
                 state = database_1->print_staff_state(read_string);
-                database_1->add_clock_in_out(read_string, state);
+                database_1->add_clock_in_out(read_string, state, set_clock_in);
 
                 database_1->print_dashboard_list(ui->tableWidget_list);
                 //입력된 카드의 사원 정보 출력
@@ -157,4 +164,14 @@ void MainWindow::setup_uart(){
     else {
         QMessageBox::information(this, "info", "연결에 실패했습니다.\n");
     }
+}
+
+void MainWindow::on_action_3_triggered()
+{
+QMessageBox::information(this, "info", "연결에 실패했습니다.\n");
+}
+
+void MainWindow::on_action_triggered()
+{
+    exit(1);
 }

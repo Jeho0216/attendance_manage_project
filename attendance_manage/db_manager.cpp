@@ -42,18 +42,27 @@ bool db_manager::add_staff(QString input_name, int input_age, QString input_phon
 }
 
 //태그된 card_id로 출근/퇴근 기록을 데이터베이스에 저장
-bool db_manager::add_clock_in_out(QString input_card_id, int state){
+bool db_manager::add_clock_in_out(QString input_card_id, int state, QString set_clock_in){
     QSqlQuery query;
     QDate date = QDate::currentDate();
     QTime time = QTime::currentTime();
     QString last_time;      //퇴근시간 입력을 위해 출근시간 확인.
     QString time_text = date.toString("yyMMdd") + time.toString("hhmm");
+    bool attendance_state = true;           //true : 정상, false : 지각
+
+    if(time.toString("hhmm").toInt() >= set_clock_in.toInt()){      //태그한 시간이 설정한 시간보다 클 경우,
+        attendance_state = false;
+    }
+    else {
+        attendance_state = true;
+    }
 
     if(state == 0 || state == 2){     //출근시간 기록
         qDebug() << "출근 등록\n";
-        query.prepare("insert into attendance_state(card_id, clock_in) values(:card, :time_in)");       //사원의 출입시간 등록
+        query.prepare("insert into attendance_state(card_id, clock_in, status) values(:card, :time_in, :status)");       //사원의 출입시간 등록
         query.bindValue(":card", input_card_id);
         query.bindValue(":time_in", time_text);
+        query.bindValue(":status", attendance_state);
 
         if(query.exec()){
             qDebug() << query.lastQuery() << endl;
@@ -67,6 +76,7 @@ bool db_manager::add_clock_in_out(QString input_card_id, int state){
             return true;
         }
         else{
+            qDebug() << query.lastError().text() << endl;
             return false;
         }
     }
@@ -165,7 +175,7 @@ void db_manager::print_dashboard_list(QTableWidget *table){
     QString query_str;
     qDebug() << "start print dashbord" << endl;
 
-    query_str = "select staff_list.name, attendance_state.clock_in, attendance_state.clock_out from staff_list join attendance_state where staff_list.card_id=attendance_state.card_id";
+    query_str = "select staff_list.name, attendance_state.clock_in, attendance_state.clock_out, attendance_state.status from staff_list join attendance_state where staff_list.card_id=attendance_state.card_id";
 
     if(query.exec(query_str)){
         qDebug() << query.lastQuery() << endl;
@@ -173,21 +183,27 @@ void db_manager::print_dashboard_list(QTableWidget *table){
             QTableWidgetItem *table_name = new QTableWidgetItem();
             QTableWidgetItem *table_clock_in = new QTableWidgetItem();
             QTableWidgetItem *table_clock_out = new QTableWidgetItem();
+            QTableWidgetItem *table_status = new QTableWidgetItem();        //출/퇴근 상태 표현용
             row_count++;
             table->setRowCount(row_count);
 
             QString name = query.value("name").toString();
             QString clock_in = query.value("clock_in").toString();
             QString clock_out = query.value("clock_out").toString();
+            QString status = query.value("status").toString();        //출/퇴근 상태 표현용
+            if(status == "0")   status = "지각";
+           else                            status = "정상";
             table_name->setText(name);
             table_clock_in->setText(clock_in);
             table_clock_out->setText(clock_out);
+            table_status->setText(status);        //출/퇴근 상태 표현용
 
             qDebug() << "name : " << name << "  clock_in : " << clock_in << "  clock_out : " << clock_out << endl;
 
             table->setItem(row_count-1, 0, table_name);
             table->setItem(row_count-1, 1, table_clock_in);
             table->setItem(row_count-1, 2, table_clock_out);
+            table->setItem(row_count-1, 3, table_status);
         }
     }
     else{
