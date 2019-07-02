@@ -153,6 +153,8 @@ void MainWindow::text_Reading(){
                 staff_info = database_1->get_staff_info(read_string);
                 ui->lineEdit_state_name->setText(staff_info[0]);
                 ui->lineEdit_state_card->setText(staff_info[3]);
+                //서보모터 동작하도록 전송.
+                port->write("servo\n");
             }
             else{
                 QMessageBox::warning(this, "warning", "등록된 사원이 아닙니다.");
