@@ -6,20 +6,23 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>330</width>
-    <height>184</height>
+    <width>310</width>
+    <height>235</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>setting</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(242,242,242);</string>
+  </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>4</x>
-     <y>10</y>
+     <x>0</x>
+     <y>0</y>
      <width>321</width>
-     <height>31</height>
+     <height>51</height>
     </rect>
    </property>
    <property name="font">
@@ -27,67 +30,29 @@
      <pointsize>15</pointsize>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/button.jpg);
+color: rgb(255, 255, 255);</string>
+   </property>
    <property name="text">
-    <string>출근시간 변경</string>
+    <string>출근시간 설정</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QWidget" name="horizontalLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>44</x>
-     <y>50</y>
-     <width>281</width>
-     <height>80</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="QSpinBox" name="spinBox_hh">
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="maximum">
-       <number>23</number>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="label_2">
-      <property name="text">
-       <string>시</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QSpinBox" name="spinBox_mm">
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="maximum">
-       <number>59</number>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="label_3">
-      <property name="text">
-       <string>분</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
   <widget class="QPushButton" name="pushButton_set">
    <property name="geometry">
     <rect>
-     <x>44</x>
-     <y>140</y>
-     <width>89</width>
-     <height>25</height>
+     <x>20</x>
+     <y>170</y>
+     <width>121</width>
+     <height>41</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/button.jpg);
+color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string>설정</string>
@@ -96,14 +61,76 @@
   <widget class="QPushButton" name="pushButton_cancel">
    <property name="geometry">
     <rect>
-     <x>180</x>
-     <y>140</y>
-     <width>89</width>
-     <height>25</height>
+     <x>170</x>
+     <y>170</y>
+     <width>121</width>
+     <height>41</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/image/button.jpg);
+color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string>취소</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>96</y>
+     <width>21</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>분</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>95</y>
+     <width>31</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>시</string>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="spinBox_mm">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>90</y>
+     <width>101</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+   <property name="maximum">
+    <number>59</number>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="spinBox_hh">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>90</y>
+     <width>101</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+   <property name="maximum">
+    <number>23</number>
    </property>
   </widget>
  </widget>

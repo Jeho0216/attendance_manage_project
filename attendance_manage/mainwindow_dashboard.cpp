@@ -28,15 +28,34 @@ MainWindow::MainWindow(QWidget *parent) :
     set_clock_in = "0900";
     ui->label_clock_in->setText(set_clock_in.left(2) + "시 " + set_clock_in.right(2) + "분");
 
-    //테이블 크기 조절
+    //테이블 디자인 조절
+    ui->tableWidget->horizontalHeader()->setStyleSheet("color:rgb(242,242,242); background:rgb(93,132,166);");
+    ui->tableWidget->verticalHeader()->setStyleSheet("color:rgb(242,242,242); background:rgb(93,132,166);");
+
+    ui->tableWidget_list->horizontalHeader()->setStyleSheet("color:rgb(242,242,242); background:rgb(93,132,166);");
+    ui->tableWidget_list->verticalHeader()->setStyleSheet("color:rgb(242,242,242); background:rgb(93,132,166);");
     ui->tableWidget_list->setColumnWidth(0, 100);
     ui->tableWidget_list->setColumnWidth(1, 200);
     ui->tableWidget_list->setColumnWidth(2, 200);
     ui->tableWidget_list->setColumnWidth(3, 30);
 
+    ui->tableWidget_info->horizontalHeader()->setStyleSheet("color:rgb(242,242,242); background:rgb(93,132,166);");
+    ui->tableWidget_info->verticalHeader()->setStyleSheet("color:rgb(242,242,242); background:rgb(93,132,166);");
     ui->tableWidget_info->setColumnWidth(0, 200);
     ui->tableWidget_info->setColumnWidth(1, 200);
     ui->tableWidget_info->setColumnWidth(2, 30);
+
+    //Progress Bar 디자인 설정
+    QString bar_in = "QProgressBar {border: 1px solid LightGray; border-radius : 5px; text-align : center;}"
+                         "QProgressBar::chunk {background:rgb(93,132,166)}";
+    QString bar_normal = "QProgressBar {border: 1px solid LightGray; border-radius : 5px; text-align : center;}"
+                         "QProgressBar::chunk {background:rgb(43,127,57)}";
+    QString bar_late = "QProgressBar {border: 1px solid LightGray; border-radius : 5px; text-align : center;}"
+                       "QProgressBar::chunk {background:rgb(178,9,0)}";
+    ui->progressBar_normal->setStyleSheet(bar_normal);
+    ui->progressBar_in->setStyleSheet(bar_in);
+    ui->progressBar_late->setStyleSheet(bar_late);
+
 }
 
 MainWindow::~MainWindow()

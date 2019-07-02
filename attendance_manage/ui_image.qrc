@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/image">
+        <file>text_field.jpg</file>
+        <file>button.jpg</file>
+    </qresource>
+</RCC>
