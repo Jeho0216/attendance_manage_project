@@ -1,7 +1,7 @@
 #include "dialog_staff_form.h"
 #include "ui_dialog_staff_form.h"
 
-Dialog_staff_form::Dialog_staff_form(QWidget *parent, db_manager *dashboard_db, QTableWidget *table, QSerialPort *input_port) :
+Dialog_staff_form::Dialog_staff_form(QWidget *parent, db_manager *dashboard_db, QTableWidget *table, QSerialPort *input_port, int *count) :
     QDialog(parent),
     ui(new Ui::Dialog_staff_form)
 {
@@ -22,6 +22,9 @@ Dialog_staff_form::Dialog_staff_form(QWidget *parent, db_manager *dashboard_db, 
     port = input_port;
     QObject::connect(port, SIGNAL(readyRead()), this, SLOT(text_Reading()));
     port->write("rfid\n");
+
+    //사원 수 정보 저장.
+    staff_count = count;
 
     //대시보드 변수 생성, 사용 불가 설정.
     dashboard = parent;
@@ -47,6 +50,9 @@ void Dialog_staff_form::text_Reading(){
     if(strchr(read_data.data(), '\n')){
         read_string.chop(1);        //마지막 개행문자 제거.
         qDebug() << read_string << " : dialog_staff_form\n";
+        if(read_string.indexOf("in:") == 0){
+            read_string.remove(0, 3);
+        }
         ui->lineEdit_card_id->setText(read_string);     //card id 칸에 출력
         read_string = "";
     }
@@ -91,13 +97,15 @@ void Dialog_staff_form::on_pushButton_accept_clicked()
         dashboard->setEnabled(true);
         database_2->print_staff(table_dashboard);
         QMessageBox::information(this, "success", "등록성공");
-        //port->close();
+        *staff_count += 1;
         this->close();
+        return;
     }
     else{
         QMessageBox::warning(this, "Insert Error", "중복된 RFID카드 입니다.");
         port->write("rfid\n");
-        return ;
+        this->close();
+        return;
     }
 }
 

@@ -28,6 +28,9 @@ MainWindow::MainWindow(QWidget *parent) :
     set_clock_in = "0900";
     ui->label_clock_in->setText(set_clock_in.left(2) + "시 " + set_clock_in.right(2) + "분");
 
+    //사원수 저장
+    progress_bar_update();
+
     //테이블 디자인 조절
     ui->tableWidget->horizontalHeader()->setStyleSheet("color:rgb(242,242,242); background:rgb(93,132,166);");
     ui->tableWidget->verticalHeader()->setStyleSheet("color:rgb(242,242,242); background:rgb(93,132,166);");
@@ -55,7 +58,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->progressBar_normal->setStyleSheet(bar_normal);
     ui->progressBar_in->setStyleSheet(bar_in);
     ui->progressBar_late->setStyleSheet(bar_late);
-
 }
 
 MainWindow::~MainWindow()
@@ -83,8 +85,11 @@ void MainWindow::on_tabWidget_tabBarClicked(int index)
     else if(index == 0){
         connect(port, SIGNAL(readyRead()), this, SLOT(text_Reading()));      //dashboard text_Reading()
 
+        progress_bar_update();
+
         ui->tableWidget_info->setRowCount(0);
         ui->tableWidget_info->setEditTriggers(QAbstractItemView::NoEditTriggers);        //테이블 수정(edit)불가 설정.
+        database_1->print_dashboard_list(ui->tableWidget_list);
 
         qDebug() << "set_clock_in : " << set_clock_in << endl;
 
@@ -96,7 +101,7 @@ void MainWindow::on_tabWidget_tabBarClicked(int index)
 
 void MainWindow::on_pushButton_add_clicked()
 {
-    staff_form = new Dialog_staff_form(this, database_1, ui->tableWidget, port);
+    staff_form = new Dialog_staff_form(this, database_1, ui->tableWidget, port, &staff_count);
     disconnect(port, SIGNAL(readyRead()), this, SLOT(text_Reading()));
     staff_form->show();
 }
@@ -136,6 +141,7 @@ void MainWindow::on_pushButton_del_clicked()
         ui->lineEdit_phone->setText("");
         ui->tableWidget->removeRow(selected_row);
         database_1->print_staff(ui->tableWidget);
+        staff_count -= 1;
     }
         else{       //실패
         QMessageBox::warning(this, "warning", "정보 삭제에 실패했습니다.");
@@ -162,7 +168,7 @@ void MainWindow::text_Reading(){
         if(index != -1){
             read_string.remove(index, 3);
             //입력한 카드로 등록된 사원이 있을 때만 실행.
-            if(database_1->count_staff(read_string) != 0){
+            if(database_1->count_staff(read_string, 1) != 0){
                 //태그한 사원의 상태 조회. 0, 1, 2 --> 신규, 출근, 퇴근 상태 확인
                 state = database_1->print_staff_state(read_string);
                 database_1->add_clock_in_out(read_string, state, set_clock_in);
@@ -181,6 +187,7 @@ void MainWindow::text_Reading(){
         }
         read_string = "";
     }
+    progress_bar_update();
 }
 
 //사원 출/퇴근 확인용 UART연결
@@ -198,6 +205,34 @@ void MainWindow::setup_uart(){
     else {
         QMessageBox::information(this, "info", "연결에 실패했습니다.\n");
     }
+}
+
+//Progress Bar 업데이트 함수
+void MainWindow::progress_bar_update(){
+    QSqlQuery query;
+
+    query.exec("select count(*) from staff_list");
+    if(query.next()){
+        staff_count = query.value(0).toInt();
+    }
+    ui->progressBar_in->setRange(0, staff_count);
+    ui->progressBar_late->setRange(0, staff_count);
+    ui->progressBar_normal->setRange(0, staff_count);
+
+    query.exec("select count(*) from attendance_state where status=1");
+    if(query.next()){
+        staff_count_normal = query.value(0).toInt();
+    }
+    ui->progressBar_normal->setValue(staff_count_normal);
+
+    query.exec("select count(*) from attendance_state where status=0");
+    if(query.next()){
+        staff_count_late = query.value(0).toInt();
+    }
+    ui->progressBar_late->setValue(staff_count_late);
+    ui->progressBar_in->setValue(staff_count_late + staff_count_normal);
+
+    qDebug() << "noraml : " << staff_count_normal << " late : " << staff_count_late << " in : " << staff_count;
 }
 
 //메뉴바 설정

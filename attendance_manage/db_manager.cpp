@@ -109,6 +109,7 @@ bool db_manager::del_staff(QString del_card_id){
 
     if(query.exec("delete from staff_list where card_id='" + del_card_id + "'")){
         qDebug() << query.lastQuery().toUtf8() << endl;
+        query.exec("delete from attendance_state where card_id='" + del_card_id + "'");
         return true;
     }
     else {
@@ -156,16 +157,25 @@ int db_manager::print_staff_state(QString input_card_id){
 }
 
 //카드에 해당하는 사원 찾기
-int db_manager::count_staff(QString input_card_id){
+int db_manager::count_staff(QString input_card_id, int count_flag){
     QSqlQuery query;
     int rows = 0;
 
-    query.exec("select count(*) from staff_list where card_id='" + input_card_id + "'");
-    if(query.next()){       //Query.next() 이후에 count값 저장해야 정상적으로 값 저장됨.
-        rows = query.value(0).toInt();
+    if(count_flag == 1){
+        query.exec("select count(*) from staff_list where card_id='" + input_card_id + "'");
+        if(query.next()){       //Query.next() 이후에 count값 저장해야 정상적으로 값 저장됨.
+            rows = query.value(0).toInt();
+        }
+        return rows;
     }
-    qDebug() << input_card_id << " number : " << QString::number(rows) << endl;
-    return rows;
+    //현재 등록된 총 사원수 체크
+    else{
+        query.exec("select count(*) from staff_list");
+        if(query.next()){
+            rows = query.value(0).toInt();
+        }
+        return rows;
+    }
 }
 
 //대시보드의 현황 탭에 출/퇴근 현황 테이블  출력.

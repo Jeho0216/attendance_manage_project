@@ -32,11 +32,15 @@ private:
     QString read_string;
     QString set_clock_in;       //사용자가 설정한  출근시간.
     int selected_row;
+    int staff_count;        //총 사원수
+    int staff_count_normal;     //정상 사원 수
+    int staff_count_late;       //지각 사원 수
 
 private slots:
     void text_Reading();
     void setup_uart();
     void show_time();
+    void progress_bar_update();
     void on_tabWidget_tabBarClicked(int index);
     void on_pushButton_add_clicked();
     void on_tableWidget_cellClicked(int row, int column);

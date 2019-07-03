@@ -20,7 +20,7 @@ public:
     bool add_clock_in_out(QString input_card_id, int state, QString set_clock_in);
     void print_staff(QTableWidget *table);
     int print_staff_state(QString input_card_id);
-    int count_staff(QString input_card_id);
+    int count_staff(QString input_card_id, int count_flag);     //전체 사원수 카운트 및 카드id의 사원 카운트 설정하여 출력.
     void print_dashboard_list(QTableWidget *table);             //대시보드의 현황 탭에 출/퇴근 현황 테이블  출력.
     void print_dashboard_staff_list(QTableWidget *table, QString input_card_id);        //대시보드의 사원관리 탭에 사원별 출/퇴근 현황 테이블 출력.
     QString get_card_id(QString name, QString phone);       //이름과 전화번호로 card_id 검색

@@ -105,8 +105,8 @@ color: rgb(255, 255, 255);</string>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image: url(:/image/button.jpg);
-color: rgb(255, 255, 255);</string>
+    <string notr="true">color: rgb(255, 255, 255);
+border-image: url(:/image/button.jpg);</string>
    </property>
    <property name="text">
     <string>Sign In</string>

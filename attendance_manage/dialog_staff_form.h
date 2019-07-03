@@ -18,7 +18,7 @@ class Dialog_staff_form : public QDialog
     Q_OBJECT
 
 public:
-    explicit Dialog_staff_form(QWidget *parent, db_manager *dashboard_db, QTableWidget *table, QSerialPort *input_port);
+    explicit Dialog_staff_form(QWidget *parent, db_manager *dashboard_db, QTableWidget *table, QSerialPort *input_port, int *count);
     ~Dialog_staff_form();
     void closeEvent(QCloseEvent *event);
 
@@ -47,6 +47,7 @@ private slots:
 private:
     Ui::Dialog_staff_form *ui;
     QWidget *dashboard;
+    int *staff_count;
 };
 
 #endif // DIALOG_STAFF_FORM_H
