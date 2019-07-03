@@ -233,6 +233,8 @@ void MainWindow::progress_bar_update(){
     ui->progressBar_in->setValue(staff_count_late + staff_count_normal);
 
     qDebug() << "noraml : " << staff_count_normal << " late : " << staff_count_late << " in : " << staff_count;
+
+    ui->label_16->setText(QString::number(staff_count));
 }
 
 //메뉴바 설정
